@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "Error Analyzer";
+}
+
+<h2>Code Error Explainer</h2>
+
+<textarea id="errorInput" rows="6" cols="80" placeholder="Paste your error here..."></textarea>
+
+<br />
+<br />
+
+<button onclick="sendError()">Analyze</button>
+
+<pre id="result"></pre>
+
+<script>
+async function sendError() {
+    const errorText = document.getElementById("errorInput").value;
+
+    const response = await fetch("/api/error/analyze", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(errorText)
+    });
+
+    const data = await response.json();
+
+    document.getElementById("result").innerText =
+        "Explanation: " + data.explanation + "\n\nSuggestion: " + data.suggestion;
+}
+</script>

@@ -1,0 +1,18 @@
+[
+  {
+    "ContainingType": "Web.Controllers.API.ErrorApiController",
+    "Method": "Analyze",
+    "RelativePath": "api/error/analyze",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "errorMessage",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

@@ -94,3 +94,5 @@ C:\Users\ACER\Desktop\AI-Code-Error-Explainer\Web\obj\Debug\net9.0\refint\Web.dl
 C:\Users\ACER\Desktop\AI-Code-Error-Explainer\Web\obj\Debug\net9.0\Web.pdb
 C:\Users\ACER\Desktop\AI-Code-Error-Explainer\Web\obj\Debug\net9.0\Web.genruntimeconfig.cache
 C:\Users\ACER\Desktop\AI-Code-Error-Explainer\Web\obj\Debug\net9.0\ref\Web.dll
+C:\Users\ACER\Desktop\AI-Code-Error-Explainer\Web\obj\Debug\net9.0\Web.sourcelink.json
+C:\Users\ACER\Desktop\AI-Code-Error-Explainer\Web\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
