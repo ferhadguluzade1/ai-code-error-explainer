@@ -8,8 +8,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "errorMessage",
-        "Type": "System.String",
+        "Name": "request",
+        "Type": "Web.Models.ErrorAnalysisRequest",
         "IsRequired": true
       }
     ],

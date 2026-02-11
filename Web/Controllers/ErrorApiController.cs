@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Web.Services;
 
 namespace Web.Controllers.API
 {
@@ -6,17 +7,48 @@ namespace Web.Controllers.API
     [Route("api/error")]
     public class ErrorApiController : ControllerBase
     {
-        [HttpPost("analyze")]
-        public IActionResult Analyze([FromBody] string errorMessage)
+        private readonly ErrorAnalysisService _service;
+        private readonly AiDecisionService _aiDecision;
+        private readonly OpenAiService _openAi;
+
+        public ErrorApiController()
         {
-            if (string.IsNullOrWhiteSpace(errorMessage))
-                return BadRequest("Error message is empty");
+            _service = new ErrorAnalysisService();
+            _aiDecision = new AiDecisionService();
+            _openAi = new OpenAiService();
+        }
+
+        [HttpPost("analyze")]
+        public async Task<IActionResult> Analyze([FromBody] Web.Models.ErrorAnalysisRequest request)
+
+        {
+            var result = _service.Analyze(request.ErrorMessage);
+
+            bool needsAi = _aiDecision.ShouldUseAI(result.confidence);
+
+            string explanation = result.explanation;
+            string suggestion = result.suggestion;
+
+            if (needsAi)
+            {
+                var aiResponse = await _openAi.AnalyzeErrorAsync(
+                request.ErrorMessage + "\nCODE:\n" + request.CodeSnippet
+                );
+
+                explanation = aiResponse;
+                suggestion = "AI generated suggestion";
+            }
 
             return Ok(new
             {
-                explanation = "This is a placeholder explanation for the error.",
-                suggestion = "AI will analyze this in later steps."
+                explanation,
+                suggestion,
+                confidence = result.confidence,
+                aiRequired = needsAi
             });
         }
+
+
+
     }
 }

@@ -9,25 +9,41 @@
 <br />
 <br />
 
+<textarea id="codeInput" rows="10" cols="80" placeholder="Paste your code here..."></textarea>
+
+<br />
+<br />
+
 <button onclick="sendError()">Analyze</button>
 
 <pre id="result"></pre>
 
 <script>
-async function sendError() {
-    const errorText = document.getElementById("errorInput").value;
+    async function sendError() {
+        const errorText = document.getElementById("errorInput").value;
 
-    const response = await fetch("/api/error/analyze", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(errorText)
-    });
+        const response = await fetch("/api/error/analyze", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                errorMessage: errorText,
+                codeSnippet: document.getElementById("codeInput").value
+            })
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    document.getElementById("result").innerText =
-        "Explanation: " + data.explanation + "\n\nSuggestion: " + data.suggestion;
-}
+        let output =
+            "Confidence: " + data.confidence + "%\n\n" +
+            "Explanation: " + data.explanation + "\n\n" +
+            "Suggestion: " + data.suggestion;
+
+        if (data.aiRequired) {
+            output += "\n\nAI deeper analysis will be triggered...";
+        }
+
+        document.getElementById("result").innerText = output;
+    }
 </script>
