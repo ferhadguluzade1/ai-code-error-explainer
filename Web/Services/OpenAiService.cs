@@ -1,31 +1,57 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Web.Services
 {
     public class OpenAiService
     {
-        public async Task<string> AnalyzeErrorAsync(string errorMessage)
+        private readonly HttpClient _httpClient = new HttpClient();
+        private readonly string _apiKey = "AIzaSyB7FEfT16B8FCOfIv-n0HGyD9XDGDjw0ww";
+
+        public async Task<string> AnalyzeErrorAsync(string input, string mode)
         {
-            await Task.Delay(800); // AI düşünürmüş kimi effekt
+            var prompt = mode == "beginner"
+                ? $"Explain this programming error simply and give a fixed code example:\n{input}"
+                : $"Analyze this programming error technically and give improved fixed code:\n{input}";
 
-            errorMessage = errorMessage.ToLower();
-
-            if (errorMessage.Contains("null"))
+            var requestBody = new
             {
-                return "AI: This error usually means an object was not initialized. Check where it becomes null.";
-            }
+                contents = new[]
+                {
+                    new
+                    {
+                        parts = new[]
+                        {
+                            new { text = prompt }
+                        }
+                    }
+                }
+            };
 
-            if (errorMessage.Contains("index"))
-            {
-                return "AI: You are likely accessing an array position that does not exist.";
-            }
+            var json = JsonSerializer.Serialize(requestBody);
 
-            if (errorMessage.Contains("type"))
-            {
-                return "AI: A type mismatch occurred. Verify variable and parameter types.";
-            }
+            var request = new HttpRequestMessage(
+                HttpMethod.Post,
+                $"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={_apiKey}"
+            );
 
-            return "AI: I could not fully understand the error, but it may relate to incorrect logic or missing initialization.";
+            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.SendAsync(request);
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            using var doc = JsonDocument.Parse(responseString);
+
+            var aiText = doc.RootElement
+                .GetProperty("candidates")[0]
+                .GetProperty("content")
+                .GetProperty("parts")[0]
+                .GetProperty("text")
+                .GetString();
+
+            return aiText;
         }
     }
 }

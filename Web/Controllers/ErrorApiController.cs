@@ -32,8 +32,10 @@ namespace Web.Controllers.API
             if (needsAi)
             {
                 var aiResponse = await _openAi.AnalyzeErrorAsync(
-                request.ErrorMessage + "\nCODE:\n" + request.CodeSnippet
+                request.ErrorMessage + "\nCODE:\n" + request.CodeSnippet,
+                request.ExplanationMode
                 );
+
 
                 explanation = aiResponse;
                 suggestion = "AI generated suggestion";

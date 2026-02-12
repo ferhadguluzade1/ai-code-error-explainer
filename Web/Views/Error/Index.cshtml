@@ -14,6 +14,19 @@
 <br />
 <br />
 
+<label>
+    <input type="radio" name="mode" value="developer" checked>
+    Developer explanation
+</label>
+
+<label>
+    <input type="radio" name="mode" value="beginner">
+    Beginner explanation
+</label>
+
+<br />
+<br />
+
 <button onclick="sendError()">Analyze</button>
 
 <pre id="result"></pre>
@@ -21,6 +34,7 @@
 <script>
     async function sendError() {
         const errorText = document.getElementById("errorInput").value;
+        const selectedMode = document.querySelector('input[name="mode"]:checked').value;
 
         const response = await fetch("/api/error/analyze", {
             method: "POST",
@@ -29,7 +43,8 @@
             },
             body: JSON.stringify({
                 errorMessage: errorText,
-                codeSnippet: document.getElementById("codeInput").value
+                codeSnippet: document.getElementById("codeInput").value,
+                explanationMode: selectedMode
             })
         });
 
