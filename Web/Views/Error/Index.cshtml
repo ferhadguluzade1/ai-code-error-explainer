@@ -2,34 +2,96 @@
     ViewData["Title"] = "Error Analyzer";
 }
 
-<h2>Code Error Explainer</h2>
+<style>
+    body {
+        background-color: #020617 !important;
+        color: #e5e7eb;
+        font-family: Consolas, monospace;
+        margin: 0;
+    }
 
-<textarea id="errorInput" rows="6" cols="80" placeholder="Paste your error here..."></textarea>
+    .container {
+        max-width: 900px;
+        margin: 60px auto;
+        padding: 30px;
+    }
 
-<br />
-<br />
+    h2 {
+        color: #38bdf8;
+        margin-bottom: 25px;
+    }
 
-<textarea id="codeInput" rows="10" cols="80" placeholder="Paste your code here..."></textarea>
+    textarea {
+        width: 100%;
+        background-color: #020617;
+        color: #e5e7eb;
+        border: 1px solid #1e293b;
+        padding: 14px;
+        border-radius: 8px;
+        margin-bottom: 18px;
+        font-size: 14px;
+    }
 
-<br />
-<br />
+        textarea:focus {
+            outline: none;
+            border-color: #38bdf8;
+        }
 
-<label>
-    <input type="radio" name="mode" value="developer" checked>
-    Developer explanation
-</label>
+    button {
+        background-color: #38bdf8;
+        color: #020617;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+    }
 
-<label>
-    <input type="radio" name="mode" value="beginner">
-    Beginner explanation
-</label>
+        button:hover {
+            background-color: #0ea5e9;
+        }
 
-<br />
-<br />
+    .mode-select {
+        margin: 18px 0;
+    }
 
-<button onclick="sendError()">Analyze</button>
+    .result-box {
+        background-color: #020617;
+        border: 1px solid #1e293b;
+        padding: 16px;
+        border-radius: 8px;
+        margin-top: 25px;
+        white-space: pre-wrap;
+        min-height: 120px;
+    }
+</style>
 
-<pre id="result"></pre>
+<div class="container">
+
+    <h2>AI Code Error Explainer</h2>
+
+    <textarea id="errorInput" rows="5" placeholder="Paste your error here..."></textarea>
+
+    <textarea id="codeInput" rows="10" placeholder="Paste your code here..."></textarea>
+
+    <div class="mode-select">
+        <label>
+            <input type="radio" name="mode" value="developer" checked>
+            Developer explanation
+        </label>
+
+        <label style="margin-left:20px;">
+            <input type="radio" name="mode" value="beginner">
+            Beginner explanation
+        </label>
+    </div>
+
+    <button onclick="sendError()">Analyze Error</button>
+
+    <div id="result" class="result-box"></div>
+
+</div>
 
 <script>
     async function sendError() {
@@ -52,11 +114,11 @@
 
         let output =
             "Confidence: " + data.confidence + "%\n\n" +
-            "Explanation: " + data.explanation + "\n\n" +
-            "Suggestion: " + data.suggestion;
+            "Explanation:\n" + data.explanation + "\n\n" +
+            "Suggestion:\n" + data.suggestion;
 
         if (data.aiRequired) {
-            output += "\n\nAI deeper analysis will be triggered...";
+            output += "\n\nAI deeper analysis triggered...";
         }
 
         document.getElementById("result").innerText = output;
