@@ -1,7 +1,10 @@
+using Web.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<ErrorHistoryService>();
 
 var app = builder.Build();
 

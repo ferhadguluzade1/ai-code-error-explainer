@@ -1,0 +1,46 @@
+﻿@model List<Web.Models.ErrorHistory>
+
+@{
+    ViewData["Title"] = "Error History";
+}
+
+<h2>Most Frequent Errors</h2>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Error</th>
+        <th>Times Occurred</th>
+    </tr>
+
+    @foreach (var item in ViewBag.CommonErrors)
+    {
+        <tr>
+            <td>@item.Error</td>
+            <td>@item.Count</td>
+        </tr>
+    }
+</table>
+
+<br />
+<br />
+
+<h2>Recent Error Analysis</h2>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Error</th>
+        <th>Code</th>
+        <th>Explanation</th>
+        <th>Date</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ErrorMessage</td>
+            <td>@item.CodeSnippet</td>
+            <td>@item.Explanation</td>
+            <td>@item.Date</td>
+        </tr>
+    }
+</table>

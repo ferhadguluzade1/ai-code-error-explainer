@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Web.Services;
+using Web.Models;
 
 namespace Web.Controllers.API
 {
@@ -10,36 +11,61 @@ namespace Web.Controllers.API
         private readonly ErrorAnalysisService _service;
         private readonly AiDecisionService _aiDecision;
         private readonly OpenAiService _openAi;
+        private readonly ErrorHistoryService _historyService;
 
-        public ErrorApiController()
+        public ErrorApiController(ErrorHistoryService historyService)
         {
             _service = new ErrorAnalysisService();
             _aiDecision = new AiDecisionService();
             _openAi = new OpenAiService();
+            _historyService = historyService;
         }
 
         [HttpPost("analyze")]
-        public async Task<IActionResult> Analyze([FromBody] Web.Models.ErrorAnalysisRequest request)
-
+        public async Task<IActionResult> Analyze([FromBody] ErrorAnalysisRequest request)
         {
             var result = _service.Analyze(request.ErrorMessage);
 
             bool needsAi = _aiDecision.ShouldUseAI(result.confidence);
 
-            string explanation = result.explanation;
-            string suggestion = result.suggestion;
+            string explanation;
 
+            if (request.ExplanationMode == "beginner")
+            {
+                explanation = "BEGINNER MODE:\n" + result.explanation;
+            }
+            else
+            {
+                explanation = "DEVELOPER MODE:\n" + result.explanation;
+            }
+
+
+            string suggestion = result.suggestion;
+            /*
+                        if (needsAi)
+                        {
+                            var aiResponse = await _openAi.AnalyzeErrorAsync(
+                                request.ErrorMessage + "\nCODE:\n" + request.CodeSnippet,
+                                request.ExplanationMode
+                            );
+
+                            explanation = aiResponse;
+                            suggestion = "AI generated suggestion";
+                        }
+            */
             if (needsAi)
             {
-                var aiResponse = await _openAi.AnalyzeErrorAsync(
-                request.ErrorMessage + "\nCODE:\n" + request.CodeSnippet,
-                request.ExplanationMode
-                );
-
-
-                explanation = aiResponse;
-                suggestion = "AI generated suggestion";
+                explanation = "AI analysis temporarily disabled. Using local analysis.";
+                suggestion = "Local engine suggestion";
             }
+
+            // HISTORY ADD
+            _historyService.Add(new ErrorHistory
+            {
+                ErrorMessage = request.ErrorMessage,
+                CodeSnippet = request.CodeSnippet,
+                Explanation = explanation
+            });
 
             return Ok(new
             {
@@ -49,8 +75,5 @@ namespace Web.Controllers.API
                 aiRequired = needsAi
             });
         }
-
-
-
     }
 }

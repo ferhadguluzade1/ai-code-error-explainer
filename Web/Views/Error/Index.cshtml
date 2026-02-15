@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewData["Title"] = "Error Analyzer";
 }
 
@@ -95,6 +95,10 @@
 
 <script>
     async function sendError() {
+
+        // əvvəlki nəticəni təmizlə
+        document.getElementById("result").innerText = "Analyzing...";
+
         const errorText = document.getElementById("errorInput").value;
         const selectedMode = document.querySelector('input[name="mode"]:checked').value;
 

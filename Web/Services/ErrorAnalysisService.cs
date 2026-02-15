@@ -27,6 +27,15 @@
                 );
             }
 
+            if (errorMessage.Contains("dividebyzero"))
+            {
+                return (
+                    "A number is being divided by zero, which is not allowed.",
+                    "Ensure the divisor is not zero before division.",
+                    80
+                );
+            }
+
             if (errorMessage.Contains("syntax"))
             {
                 return (
