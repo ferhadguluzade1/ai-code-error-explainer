@@ -80,7 +80,7 @@
               "RelativeDocumentMoniker": "Web\\Views\\History\\Index.cshtml",
               "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\History\\Index.cshtml",
               "RelativeToolTip": "Web\\Views\\History\\Index.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2026-02-15T16:28:47.408Z",
               "EditorCaption": ""
@@ -93,7 +93,7 @@
               "RelativeDocumentMoniker": "Web\\Controllers\\HistoryController.cs",
               "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Controllers\\HistoryController.cs",
               "RelativeToolTip": "Web\\Controllers\\HistoryController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAcAAAAAAAAAAADwvw4AAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-15T16:28:08.507Z",
               "EditorCaption": ""
@@ -108,8 +108,7 @@
               "RelativeToolTip": "Web\\Controllers\\ErrorApiController.cs",
               "ViewState": "AgIAABAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-10T18:49:10.466Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-10T18:49:10.466Z"
             },
             {
               "$type": "Document",
@@ -121,8 +120,7 @@
               "RelativeToolTip": "Web\\Views\\Error\\Index.cshtml",
               "ViewState": "AgIAAFUAAAAAAAAAAAAIwIIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-11T17:57:00.305Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-11T17:57:00.305Z"
             },
             {
               "$type": "Document",
@@ -134,8 +132,7 @@
               "RelativeToolTip": "Web\\Services\\ErrorAnalysisService.cs",
               "ViewState": "AgIAAAIAAAAAAAAAAAAxwEAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-11T17:49:33.841Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-11T17:49:33.841Z"
             },
             {
               "$type": "Document",
@@ -147,8 +144,7 @@
               "RelativeToolTip": "Web\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-15T15:45:31.287Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-15T15:45:31.287Z"
             },
             {
               "$type": "Document",
@@ -160,8 +156,7 @@
               "RelativeToolTip": "Web\\Models\\ErrorHistoryService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-15T15:45:19.984Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-15T15:45:19.984Z"
             },
             {
               "$type": "Document",
@@ -173,8 +168,7 @@
               "RelativeToolTip": "Web\\Models\\ErrorHistory.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-15T15:44:56.856Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-15T15:44:56.856Z"
             },
             {
               "$type": "Document",
@@ -186,8 +180,7 @@
               "RelativeToolTip": "Web\\Views\\Shared\\_Layout.cshtml",
               "ViewState": "AgIAABUAAAAAAAAAAAAAACgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-13T17:08:37.022Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-13T17:08:37.022Z"
             },
             {
               "$type": "Document",

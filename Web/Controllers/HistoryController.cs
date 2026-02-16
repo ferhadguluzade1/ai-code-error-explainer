@@ -28,6 +28,15 @@ namespace Web.Controllers
 
             ViewBag.CommonErrors = mostCommonErrors;
 
+            var warnings = history
+            .GroupBy(x => x.ErrorMessage)
+            .Where(g => g.Count() >= 3)
+            .Select(g => $"You often encounter: {g.Key}")
+            .ToList();
+
+            ViewBag.Warnings = warnings;
+
+
             return View(history);
         }
 
