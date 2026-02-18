@@ -120,6 +120,15 @@
             "Confidence: " + data.confidence + "%\n\n" +
             "Explanation:\n" + data.explanation + "\n\n" +
             "Suggestion:\n" + data.suggestion;
+        
+            output += "\n\nFixed Code:\n" + data.fixedCode;
+
+        if (data.alternativeFix && data.alternativeFix.length > 0) 
+        {
+            output += "\n\nAlternative Fix:\n" + data.alternativeFix;
+        }
+
+
 
         if (data.aiRequired) {
             output += "\n\nAI deeper analysis triggered...";

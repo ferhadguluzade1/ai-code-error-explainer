@@ -12,6 +12,7 @@ namespace Web.Controllers.API
         private readonly AiDecisionService _aiDecision;
         private readonly OpenAiService _openAi;
         private readonly ErrorHistoryService _historyService;
+        private readonly CodeFixService _codeFix;
 
         public ErrorApiController(ErrorHistoryService historyService)
         {
@@ -19,6 +20,8 @@ namespace Web.Controllers.API
             _aiDecision = new AiDecisionService();
             _openAi = new OpenAiService();
             _historyService = historyService;
+            _codeFix = new CodeFixService();
+
         }
 
         [HttpPost("analyze")]
@@ -66,14 +69,22 @@ namespace Web.Controllers.API
                 CodeSnippet = request.CodeSnippet,
                 Explanation = explanation
             });
+            var fixes = _codeFix.GenerateFix(request.ErrorMessage, request.CodeSnippet, request.ExplanationMode);
+
+
+
 
             return Ok(new
             {
                 explanation,
                 suggestion,
                 confidence = result.confidence,
-                aiRequired = needsAi
+                aiRequired = needsAi,
+                fixedCode = fixes.primaryFix,
+                alternativeFix = fixes.alternativeFix
             });
+
+
         }
     }
 }
