@@ -71,7 +71,14 @@ namespace Web.Controllers.API
             });
             var fixes = _codeFix.GenerateFix(request.ErrorMessage, request.CodeSnippet, request.ExplanationMode);
 
+            string riskLevel;
 
+            if (result.confidence >= 80)
+                riskLevel = "Low";
+            else if (result.confidence >= 50)
+                riskLevel = "Medium";
+            else
+                riskLevel = "High";
 
 
             return Ok(new
@@ -79,6 +86,7 @@ namespace Web.Controllers.API
                 explanation,
                 suggestion,
                 confidence = result.confidence,
+                riskLevel = riskLevel,
                 aiRequired = needsAi,
                 fixedCode = fixes.primaryFix,
                 alternativeFix = fixes.alternativeFix

@@ -11,7 +11,7 @@
     }
 
     .container {
-        max-width: 900px;
+        max-width: 1100px;
         margin: 60px auto;
         padding: 30px;
     }
@@ -63,7 +63,20 @@
         border-radius: 8px;
         margin-top: 25px;
         white-space: pre-wrap;
-        min-height: 120px;
+        min-height: 200px;
+    }
+
+    /* SPLIT LAYOUT */
+    .split-layout {
+        display: flex;
+        gap: 30px;
+    }
+
+    /* RESPONSIVE (Razor üçün @@media istifadə olunur) */
+    @@media (max-width: 900px) {
+        .split-layout {
+            flex-direction: column;
+        }
     }
 </style>
 
@@ -71,32 +84,43 @@
 
     <h2>AI Code Error Explainer</h2>
 
-    <textarea id="errorInput" rows="5" placeholder="Paste your error here..."></textarea>
+    <div class="split-layout">
 
-    <textarea id="codeInput" rows="10" placeholder="Paste your code here..."></textarea>
+        <!-- LEFT PANEL -->
+        <div style="flex:1;">
 
-    <div class="mode-select">
-        <label>
-            <input type="radio" name="mode" value="developer" checked>
-            Developer explanation
-        </label>
+            <textarea id="errorInput" rows="5" placeholder="Paste your error here..."></textarea>
 
-        <label style="margin-left:20px;">
-            <input type="radio" name="mode" value="beginner">
-            Beginner explanation
-        </label>
+            <textarea id="codeInput" rows="12" placeholder="Paste your code here..."></textarea>
+
+            <div class="mode-select">
+                <label>
+                    <input type="radio" name="mode" value="developer" checked>
+                    Developer explanation
+                </label>
+
+                <label style="margin-left:20px;">
+                    <input type="radio" name="mode" value="beginner">
+                    Beginner explanation
+                </label>
+            </div>
+
+            <button onclick="sendError()">Analyze Error</button>
+
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div style="flex:1;">
+            <div id="result" class="result-box"></div>
+        </div>
+
     </div>
-
-    <button onclick="sendError()">Analyze Error</button>
-
-    <div id="result" class="result-box"></div>
 
 </div>
 
 <script>
     async function sendError() {
 
-        // əvvəlki nəticəni təmizlə
         document.getElementById("result").innerText = "Analyzing...";
 
         const errorText = document.getElementById("errorInput").value;
@@ -116,19 +140,23 @@
 
         const data = await response.json();
 
+        let riskLabel = "";
+
+        if (data.riskLevel === "Low") riskLabel = "[LOW RISK]";
+        if (data.riskLevel === "Medium") riskLabel = "[MEDIUM RISK]";
+        if (data.riskLevel === "High") riskLabel = "[HIGH RISK]";
+
         let output =
+            "Risk Level: " + riskLabel + "\n\n" +
             "Confidence: " + data.confidence + "%\n\n" +
             "Explanation:\n" + data.explanation + "\n\n" +
             "Suggestion:\n" + data.suggestion;
-        
-            output += "\n\nFixed Code:\n" + data.fixedCode;
 
-        if (data.alternativeFix && data.alternativeFix.length > 0) 
-        {
+        output += "\n\nFixed Code:\n" + data.fixedCode;
+
+        if (data.alternativeFix && data.alternativeFix.length > 0) {
             output += "\n\nAlternative Fix:\n" + data.alternativeFix;
         }
-
-
 
         if (data.aiRequired) {
             output += "\n\nAI deeper analysis triggered...";

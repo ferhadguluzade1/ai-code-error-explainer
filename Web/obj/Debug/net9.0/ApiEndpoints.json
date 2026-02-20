@@ -14,5 +14,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Web.Controllers.API.LearningApiController",
+    "Method": "Ask",
+    "RelativePath": "api/learning/ask",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "Web.Controllers.API.LearningQuestion",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
