@@ -10,22 +10,27 @@ namespace Web.Controllers.API
     {
         private readonly ErrorAnalysisService _service;
         private readonly AiDecisionService _aiDecision;
-        private readonly OpenAiService _openAi;
         private readonly ErrorHistoryService _historyService;
         private readonly CodeFixService _codeFix;
 
-        public ErrorApiController(ErrorHistoryService historyService)
+        /* private readonly OpenAiService _openAi; */
+        /* private readonly IConfiguration _config; */
+
+        public ErrorApiController()
         {
             _service = new ErrorAnalysisService();
             _aiDecision = new AiDecisionService();
-            _openAi = new OpenAiService();
-            _historyService = historyService;
+            _historyService = new ErrorHistoryService();
             _codeFix = new CodeFixService();
 
+            /*
+            _config = config;
+            _openAi = new OpenAiService(_config);
+            */
         }
 
         [HttpPost("analyze")]
-        public async Task<IActionResult> Analyze([FromBody] ErrorAnalysisRequest request)
+        public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
         {
             var result = _service.Analyze(request.ErrorMessage);
 
@@ -42,25 +47,47 @@ namespace Web.Controllers.API
                 explanation = "DEVELOPER MODE:\n" + result.explanation;
             }
 
-
             string suggestion = result.suggestion;
-            /*
-                        if (needsAi)
-                        {
-                            var aiResponse = await _openAi.AnalyzeErrorAsync(
-                                request.ErrorMessage + "\nCODE:\n" + request.CodeSnippet,
-                                request.ExplanationMode
-                            );
 
-                            explanation = aiResponse;
-                            suggestion = "AI generated suggestion";
-                        }
-            */
+            /*
             if (needsAi)
             {
-                explanation = "AI analysis temporarily disabled. Using local analysis.";
-                suggestion = "Local engine suggestion";
+                var aiResponse = await _openAi.AnalyzeErrorAsync(
+                    request.ErrorMessage + "\nCODE:\n" + request.CodeSnippet,
+                    request.ExplanationMode
+                );
+
+                explanation = aiResponse;
+                suggestion = "AI generated suggestion";
             }
+            */
+
+            /*
+            if (needsAi)
+            {
+                var aiResponse = await _openAi.AnalyzeStructuredAsync(
+                    request.ErrorMessage + "\nCODE:\n" + request.CodeSnippet,
+                    request.ExplanationMode
+                );
+
+                if (aiResponse != null)
+                {
+                    explanation = aiResponse.Explanation + "\n\nRoot Cause:\n" + aiResponse.RootCause;
+
+                    suggestion = aiResponse.BestPractice;
+
+                    return Ok(new
+                    {
+                        explanation,
+                        suggestion,
+                        confidence = result.confidence,
+                        aiRequired = true,
+                        fixedCode = aiResponse.FixedCode,
+                        alternativeFix = aiResponse.AlternativeFix
+                    });
+                }
+            }
+            */
 
             // HISTORY ADD
             _historyService.Add(new ErrorHistory
@@ -69,7 +96,12 @@ namespace Web.Controllers.API
                 CodeSnippet = request.CodeSnippet,
                 Explanation = explanation
             });
-            var fixes = _codeFix.GenerateFix(request.ErrorMessage, request.CodeSnippet, request.ExplanationMode);
+
+            var fixes = _codeFix.GenerateFix(
+                request.ErrorMessage,
+                request.CodeSnippet,
+                request.ExplanationMode
+            );
 
             string riskLevel;
 
@@ -80,19 +112,16 @@ namespace Web.Controllers.API
             else
                 riskLevel = "High";
 
-
             return Ok(new
             {
                 explanation,
                 suggestion,
                 confidence = result.confidence,
                 riskLevel = riskLevel,
-                aiRequired = needsAi,
+                aiRequired = false,
                 fixedCode = fixes.primaryFix,
                 alternativeFix = fixes.alternativeFix
             });
-
-
         }
     }
 }

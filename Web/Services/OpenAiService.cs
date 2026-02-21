@@ -1,57 +1,89 @@
 ﻿using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+using Web.Models;
 
 namespace Web.Services
 {
     public class OpenAiService
     {
-        private readonly HttpClient _httpClient = new HttpClient();
-        private readonly string _apiKey = "AIzaSyB7FEfT16B8FCOfIv-n0HGyD9XDGDjw0ww";
+        private readonly HttpClient _httpClient;
+        private readonly string _apiKey;
 
-        public async Task<string> AnalyzeErrorAsync(string input, string mode)
+        public OpenAiService(IConfiguration config)
         {
-            var prompt = mode == "beginner"
-                ? $"Explain this programming error simply and give a fixed code example:\n{input}"
-                : $"Analyze this programming error technically and give improved fixed code:\n{input}";
+            _httpClient = new HttpClient();
+            _apiKey = config["OpenAI:ApiKey"];
+        }
 
-            var requestBody = new
+        public async Task<AiStructuredResponse> AnalyzeStructuredAsync(string input, string mode)
+        {
+            try
             {
-                contents = new[]
+                var prompt = $@"
+Return ONLY valid JSON.
+Do NOT include explanations outside JSON.
+
+Format:
+
+{{
+  ""Explanation"": ""..."",
+  ""RootCause"": ""..."",
+  ""BestPractice"": ""..."",
+  ""FixedCode"": ""..."",
+  ""AlternativeFix"": ""...""
+}}
+
+Mode: {mode}
+
+Input:
+{input}
+";
+
+                var requestBody = new
                 {
-                    new
+                    model = "gpt-4o-mini",
+                    messages = new[]
                     {
-                        parts = new[]
-                        {
-                            new { text = prompt }
-                        }
-                    }
+                        new { role = "system", content = "You are a professional coding assistant." },
+                        new { role = "user", content = prompt }
+                    },
+                    temperature = 0.2
+                };
+
+                var json = JsonSerializer.Serialize(requestBody);
+
+                var request = new HttpRequestMessage(HttpMethod.Post,
+                    "https://api.openai.com/v1/chat/completions");
+
+                request.Headers.Add("Authorization", $"Bearer {_apiKey}");
+                request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
                 }
-            };
 
-            var json = JsonSerializer.Serialize(requestBody);
+                var responseString = await response.Content.ReadAsStringAsync();
 
-            var request = new HttpRequestMessage(
-                HttpMethod.Post,
-                $"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={_apiKey}"
-            );
+                using var doc = JsonDocument.Parse(responseString);
 
-            request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+                var content = doc.RootElement
+                    .GetProperty("choices")[0]
+                    .GetProperty("message")
+                    .GetProperty("content")
+                    .GetString();
 
-            var response = await _httpClient.SendAsync(request);
-            var responseString = await response.Content.ReadAsStringAsync();
+                var structured = JsonSerializer.Deserialize<AiStructuredResponse>(content);
 
-            using var doc = JsonDocument.Parse(responseString);
-
-            var aiText = doc.RootElement
-                .GetProperty("candidates")[0]
-                .GetProperty("content")
-                .GetProperty("parts")[0]
-                .GetProperty("text")
-                .GetString();
-
-            return aiText;
+                return structured;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
