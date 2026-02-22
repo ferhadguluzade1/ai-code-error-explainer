@@ -32,6 +32,14 @@ namespace Web.Controllers.API
         [HttpPost("analyze")]
         public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
         {
+            if (string.IsNullOrWhiteSpace(request.ErrorMessage)
+      && string.IsNullOrWhiteSpace(request.CodeSnippet))
+            {
+                return BadRequest(new
+                {
+                    message = "No input provided."
+                });
+            }
             var result = _service.Analyze(request.ErrorMessage);
 
             bool needsAi = _aiDecision.ShouldUseAI(result.confidence);

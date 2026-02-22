@@ -1,8 +1,114 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "AI Code Error Explainer";
+    Layout = "_Layout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    .hero {
+        text-align: center;
+        padding: 80px 20px;
+    }
+
+        .hero h1 {
+            font-size: 42px;
+            color: #38bdf8;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #94a3b8;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+        }
+
+    .cta-btn {
+        background: #38bdf8;
+        color: #020617;
+        padding: 14px 28px;
+        border-radius: 8px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .cta-btn:hover {
+            background: #0ea5e9;
+        }
+
+    .features {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 80px;
+        gap: 30px;
+    }
+
+    .feature-card {
+        background: #0f172a;
+        padding: 30px;
+        border-radius: 12px;
+        border: 1px solid #1e293b;
+        flex: 1;
+        transition: 0.2s;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+        }
+
+        .feature-card h3 {
+            color: #38bdf8;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+    @@media (max-width: 900px) {
+        .features
+
+    {
+        flex-direction: column;
+    }
+
+    }
+</style>
+
+<div class="hero">
+    <h1>AI Code Error Explainer</h1>
+    <p>
+        A smart interactive platform that analyzes coding errors,
+        suggests fixes, and helps developers learn from real mistakes.
+    </p>
+
+    <a href="/error" class="cta-btn">Start Analyzing Errors</a>
+</div>
+
+<div class="features">
+    <div class="feature-card">
+        <h3>Smart Error Analysis</h3>
+        <p>
+            Detect common programming errors and receive structured explanations,
+            risk levels, and possible fixes.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <h3>Learning Mentor</h3>
+        <p>
+            Explore past mistakes, understand root causes, and improve
+            your debugging skills over time.
+        </p>
+    </div>
+
+    <div class="feature-card">
+        <h3>Behavior Tracking</h3>
+        <p>
+            Monitor repeated errors and identify patterns in your development
+            workflow.
+        </p>
+    </div>
 </div>

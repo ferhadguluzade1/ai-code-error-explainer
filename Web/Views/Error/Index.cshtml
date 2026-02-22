@@ -119,12 +119,19 @@
 </div>
 
 <script>
-    async function sendError() {
+        async function sendError() {
+
+        const errorText = document.getElementById("errorInput").value.trim();
+        const codeText = document.getElementById("codeInput").value.trim();
+        const selectedMode = document.querySelector('input[name="mode"]:checked').value;
+
+        if (errorText === "" && codeText === "") {
+            document.getElementById("result").innerText =
+                "Please provide at least an error message or a code snippet before analyzing.";
+            return;
+        }
 
         document.getElementById("result").innerText = "Analyzing...";
-
-        const errorText = document.getElementById("errorInput").value;
-        const selectedMode = document.querySelector('input[name="mode"]:checked').value;
 
         const response = await fetch("/api/error/analyze", {
             method: "POST",
@@ -133,21 +140,15 @@
             },
             body: JSON.stringify({
                 errorMessage: errorText,
-                codeSnippet: document.getElementById("codeInput").value,
+                codeSnippet: codeText,
                 explanationMode: selectedMode
             })
         });
 
         const data = await response.json();
 
-        let riskLabel = "";
-
-        if (data.riskLevel === "Low") riskLabel = "[LOW RISK]";
-        if (data.riskLevel === "Medium") riskLabel = "[MEDIUM RISK]";
-        if (data.riskLevel === "High") riskLabel = "[HIGH RISK]";
-
         let output =
-            "Risk Level: " + riskLabel + "\n\n" +
+            "Risk Level: [" + data.riskLevel.toUpperCase() + " RISK]\n\n" +
             "Confidence: " + data.confidence + "%\n\n" +
             "Explanation:\n" + data.explanation + "\n\n" +
             "Suggestion:\n" + data.suggestion;

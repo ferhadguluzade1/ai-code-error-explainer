@@ -3,8 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\controllers\\api\\errorapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\controllers\\api\\errorapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\views\\error\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\views\\error\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\views\\_viewstart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\services\\openaiservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -31,10 +55,6 @@
       "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\controllers\\api\\learningapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\views\\error\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\views\\error\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\services\\codefixservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\services\\codefixservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -47,20 +67,12 @@
       "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\services\\erroranalysisservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\models\\errorhistoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\models\\errorhistoryservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\models\\errorhistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\models\\errorhistory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|solutionrelative:web\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E01E86F5-2164-4F5C-B6DE-9AE52A71012B}|Web\\Web.csproj|c:\\users\\acer\\desktop\\ai-code-error-explainer\\web\\models\\erroranalysisrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -90,7 +102,85 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\Error\\Index.cshtml",
+              "RelativeDocumentMoniker": "Web\\Views\\Error\\Index.cshtml",
+              "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\Error\\Index.cshtml",
+              "RelativeToolTip": "Web\\Views\\Error\\Index.cshtml",
+              "ViewState": "AgIAAH0AAAAAAAAAAAAuwKYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-11T17:57:00.305Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "ErrorApiController.cs",
+              "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Controllers\\API\\ErrorApiController.cs",
+              "RelativeDocumentMoniker": "Web\\Controllers\\API\\ErrorApiController.cs",
+              "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Controllers\\API\\ErrorApiController.cs",
+              "RelativeToolTip": "Web\\Controllers\\API\\ErrorApiController.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAUwCkAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-10T18:49:10.466Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Web\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Web\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEUAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-22T15:05:28.02Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Web\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Web\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAADUAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-13T17:08:37.022Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "_ViewStart.cshtml",
+              "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\_ViewStart.cshtml",
+              "RelativeDocumentMoniker": "Web\\Views\\_ViewStart.cshtml",
+              "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\_ViewStart.cshtml",
+              "RelativeToolTip": "Web\\Views\\_ViewStart.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-02-22T15:15:03.124Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Web\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Web\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-22T15:05:01.53Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "OpenAiService.cs",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Services\\OpenAiService.cs",
               "RelativeDocumentMoniker": "Web\\Services\\OpenAiService.cs",
@@ -103,7 +193,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Program.cs",
+              "RelativeDocumentMoniker": "Web\\Program.cs",
+              "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Program.cs",
+              "RelativeToolTip": "Web\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T15:45:31.287Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\appsettings.json",
               "RelativeDocumentMoniker": "Web\\appsettings.json",
@@ -111,25 +214,11 @@
               "RelativeToolTip": "Web\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-02-21T17:58:13.812Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-21T17:58:13.812Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ErrorApiController.cs",
-              "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Controllers\\API\\ErrorApiController.cs",
-              "RelativeDocumentMoniker": "Web\\Controllers\\API\\ErrorApiController.cs",
-              "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Controllers\\API\\ErrorApiController.cs",
-              "RelativeToolTip": "Web\\Controllers\\API\\ErrorApiController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAH4AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-10T18:49:10.466Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 9,
               "Title": "AiDecisionService.cs",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Services\\AiDecisionService.cs",
               "RelativeDocumentMoniker": "Web\\Services\\AiDecisionService.cs",
@@ -137,12 +226,11 @@
               "RelativeToolTip": "Web\\Services\\AiDecisionService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-11T17:59:16.541Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-11T17:59:16.541Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 10,
               "Title": "AiStructuredResponse.cs",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Models\\AiStructuredResponse.cs",
               "RelativeDocumentMoniker": "Web\\Models\\AiStructuredResponse.cs",
@@ -154,7 +242,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 12,
               "Title": "LearningApiController.cs",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Controllers\\API\\LearningApiController.cs",
               "RelativeDocumentMoniker": "Web\\Controllers\\API\\LearningApiController.cs",
@@ -166,19 +254,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\Error\\Index.cshtml",
-              "RelativeDocumentMoniker": "Web\\Views\\Error\\Index.cshtml",
-              "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\Error\\Index.cshtml",
-              "RelativeToolTip": "Web\\Views\\Error\\Index.cshtml",
-              "ViewState": "AgIAAJMAAAAAAAAAAAAUwKYAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-11T17:57:00.305Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 11,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\History\\Index.cshtml",
               "RelativeDocumentMoniker": "Web\\Views\\History\\Index.cshtml",
@@ -190,7 +266,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 13,
               "Title": "CodeFixService.cs",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Services\\CodeFixService.cs",
               "RelativeDocumentMoniker": "Web\\Services\\CodeFixService.cs",
@@ -202,7 +278,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 14,
               "Title": "HistoryController.cs",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Controllers\\HistoryController.cs",
               "RelativeDocumentMoniker": "Web\\Controllers\\HistoryController.cs",
@@ -214,7 +290,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 15,
               "Title": "ErrorAnalysisService.cs",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Services\\ErrorAnalysisService.cs",
               "RelativeDocumentMoniker": "Web\\Services\\ErrorAnalysisService.cs",
@@ -226,19 +302,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Program.cs",
-              "RelativeDocumentMoniker": "Web\\Program.cs",
-              "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Program.cs",
-              "RelativeToolTip": "Web\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-15T15:45:31.287Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 16,
               "Title": "ErrorHistoryService.cs",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Models\\ErrorHistoryService.cs",
               "RelativeDocumentMoniker": "Web\\Models\\ErrorHistoryService.cs",
@@ -250,7 +314,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 17,
               "Title": "ErrorHistory.cs",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Models\\ErrorHistory.cs",
               "RelativeDocumentMoniker": "Web\\Models\\ErrorHistory.cs",
@@ -262,19 +326,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "Web\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "Web\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAABUAAAAAAAAAAAAAACgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-02-13T17:08:37.022Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 18,
               "Title": "ErrorAnalysisRequest.cs",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Models\\ErrorAnalysisRequest.cs",
               "RelativeDocumentMoniker": "Web\\Models\\ErrorAnalysisRequest.cs",
@@ -286,7 +338,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 19,
               "Title": "ErrorController.cs",
               "DocumentMoniker": "C:\\Users\\ACER\\Desktop\\AI-Code-Error-Explainer\\Web\\Controllers\\ErrorController.cs",
               "RelativeDocumentMoniker": "Web\\Controllers\\ErrorController.cs",
