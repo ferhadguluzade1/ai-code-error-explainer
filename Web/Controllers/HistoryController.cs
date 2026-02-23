@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Web.Services;
+using Web.Models;
 
 namespace Web.Controllers
 {
@@ -35,7 +35,8 @@ namespace Web.Controllers
             .ToList();
 
             ViewBag.Warnings = warnings;
-
+            var insights = _historyService.GetLearningInsights();
+            ViewBag.LearningInsights = insights;
 
             return View(history);
         }

@@ -57,13 +57,14 @@
     }
 
     .result-box {
-        background-color: #020617;
+        background: linear-gradient(145deg, #0f172a, #111827);
         border: 1px solid #1e293b;
-        padding: 16px;
-        border-radius: 8px;
+        padding: 20px;
+        border-radius: 12px;
         margin-top: 25px;
         white-space: pre-wrap;
-        min-height: 200px;
+        min-height: 150px;
+        box-shadow: 0 0 20px rgba(56,189,248,0.1);
     }
 
     /* SPLIT LAYOUT */
@@ -77,6 +78,67 @@
         .split-layout {
             flex-direction: column;
         }
+    }
+
+    .analyzer-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: start;
+        margin-top: 40px;
+    }
+
+    .input-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .result-panel {
+        background: linear-gradient(145deg,#0b1220,#020617);
+        border: 1px solid #1e293b;
+        border-radius: 14px;
+        padding: 22px;
+        min-height: 320px;
+        box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+    }
+
+    @@media (max-width: 1000px) {
+        .analyzer-wrapper
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+    .split-layout {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+        margin-top: 30px;
+    }
+
+        .split-layout > div {
+            flex: 1;
+        }
+
+    .result-box {
+        background: linear-gradient(145deg,#0b1220,#020617);
+        border: 1px solid #1e293b;
+        border-radius: 14px;
+        padding: 22px;
+        min-height: 340px;
+        box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+    }
+
+    @@media (max-width: 1000px) {
+        .split-layout
+
+    {
+        flex-direction: column;
+    }
+
     }
 </style>
 
@@ -119,19 +181,24 @@
 </div>
 
 <script>
-        async function sendError() {
+    async function sendError() {
+
+        const resultBox = document.getElementById("result");
 
         const errorText = document.getElementById("errorInput").value.trim();
         const codeText = document.getElementById("codeInput").value.trim();
         const selectedMode = document.querySelector('input[name="mode"]:checked').value;
 
+        // boş input yoxlanması
         if (errorText === "" && codeText === "") {
-            document.getElementById("result").innerText =
+            resultBox.innerText =
                 "Please provide at least an error message or a code snippet before analyzing.";
+            resultBox.style.borderColor = "#ef4444";
             return;
         }
 
-        document.getElementById("result").innerText = "Analyzing...";
+        resultBox.innerText = "Analyzing...";
+        resultBox.style.borderColor = "#1e293b";
 
         const response = await fetch("/api/error/analyze", {
             method: "POST",
@@ -153,7 +220,9 @@
             "Explanation:\n" + data.explanation + "\n\n" +
             "Suggestion:\n" + data.suggestion;
 
-        output += "\n\nFixed Code:\n" + data.fixedCode;
+        if (data.fixedCode) {
+            output += "\n\nFixed Code:\n" + data.fixedCode;
+        }
 
         if (data.alternativeFix && data.alternativeFix.length > 0) {
             output += "\n\nAlternative Fix:\n" + data.alternativeFix;
@@ -163,6 +232,17 @@
             output += "\n\nAI deeper analysis triggered...";
         }
 
-        document.getElementById("result").innerText = output;
+        resultBox.innerText = output;
+
+        // risk vizual highlight
+        if (data.riskLevel === "High") {
+            resultBox.style.borderColor = "#ef4444";
+        }
+        else if (data.riskLevel === "Medium") {
+            resultBox.style.borderColor = "#f59e0b";
+        }
+        else {
+            resultBox.style.borderColor = "#22c55e";
+        }
     }
 </script>

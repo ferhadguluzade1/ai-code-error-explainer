@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Web.Services;
 using Web.Models;
+using Web.Data;
 
 namespace Web.Controllers.API
 {
@@ -13,20 +14,12 @@ namespace Web.Controllers.API
         private readonly ErrorHistoryService _historyService;
         private readonly CodeFixService _codeFix;
 
-        /* private readonly OpenAiService _openAi; */
-        /* private readonly IConfiguration _config; */
-
-        public ErrorApiController()
+        public ErrorApiController(ErrorHistoryService historyService)
         {
             _service = new ErrorAnalysisService();
             _aiDecision = new AiDecisionService();
-            _historyService = new ErrorHistoryService();
+            _historyService = historyService;
             _codeFix = new CodeFixService();
-
-            /*
-            _config = config;
-            _openAi = new OpenAiService(_config);
-            */
         }
 
         [HttpPost("analyze")]

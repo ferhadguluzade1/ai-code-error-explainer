@@ -13,7 +13,8 @@
 
     h2 {
         color: #38bdf8;
-        margin-top: 30px;
+        margin-top: 40px;
+        margin-bottom: 20px;
         text-shadow: 0 0 12px rgba(56,189,248,0.15);
     }
 
@@ -22,24 +23,24 @@
         border-collapse: collapse;
         background: #020617;
         border: 1px solid #1e293b;
-        border-radius: 8px;
+        border-radius: 10px;
         overflow: hidden;
-        overflow-x: auto;
-        display: block;
+        margin-bottom: 40px;
     }
 
     th {
         background: #0f172a;
         color: #38bdf8;
-        padding: 12px;
+        padding: 14px;
         text-align: left;
         border-bottom: 1px solid #1e293b;
     }
 
     td {
-        padding: 12px;
+        padding: 14px;
         border-bottom: 1px solid #1e293b;
         color: #e5e7eb;
+        vertical-align: top;
     }
 
     tr:hover {
@@ -51,63 +52,99 @@
         background: #020617;
         color: #e5e7eb;
         border: 1px solid #1e293b;
-        padding: 12px;
-        border-radius: 8px;
+        padding: 14px;
+        border-radius: 10px;
         font-family: Consolas;
+        resize: vertical;
     }
 
     .ai-btn {
         background: linear-gradient(135deg, #38bdf8, #6366f1);
         color: white;
         border: none;
-        padding: 12px 26px;
+        padding: 12px 28px;
         border-radius: 999px;
         font-weight: 600;
         letter-spacing: 0.4px;
         cursor: pointer;
         transition: all 0.25s ease;
-        box-shadow: 0 0 0 rgba(99,102,241,0);
     }
 
         .ai-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 0 18px rgba(99,102,241,0.35);
+            box-shadow: 0 0 20px rgba(99,102,241,0.35);
         }
 
-        .ai-btn:active {
-            transform: scale(0.98);
+    .learning-panel {
+        background: linear-gradient(135deg,#071029,#020617);
+        border: 1px solid #1e293b;
+        border-left: 4px solid #38bdf8;
+        padding: 20px;
+        margin-bottom: 50px;
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+        .learning-panel h3 {
+            margin-top: 0;
+            margin-bottom: 14px;
+            color: #38bdf8;
+            font-weight: 600;
         }
 
-    .learning-box {
-        margin-top: 20px;
+        .learning-panel ul {
+            margin: 0;
+            padding-left: 18px;
+            line-height: 1.7;
+            color: #cbd5f5;
+        }
+
+    .warning-panel {
+        background: linear-gradient(135deg, #2b0f0f, #3a1212);
+        color: #ffb3b3;
+        padding: 18px;
+        margin-bottom: 35px;
+        border-left: 5px solid #ff4d4d;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(255,0,0,0.15);
+    }
+
+    .mentor-box {
+        margin-top: 25px;
         background: #020617;
         border: 1px solid #1e293b;
         border-left: 4px solid #38bdf8;
         box-shadow: 0 0 25px rgba(56,189,248,0.08);
-        padding: 16px;
-        border-radius: 8px;
+        padding: 18px;
+        border-radius: 12px;
         white-space: pre-wrap;
         min-height: 120px;
     }
 </style>
 
-
 @if (ViewBag.Warnings != null && ViewBag.Warnings.Count > 0)
 {
-    <div style="
-                background: linear-gradient(135deg, #2b0f0f, #3a1212);
-                color: #ffb3b3;
-                padding:18px;
-                margin-bottom:25px;
-                border-left:5px solid #ff4d4d;
-                border-radius:10px;
-                box-shadow:0 4px 20px rgba(255,0,0,0.15);
-            ">
-        <h3 style="margin-top:0; color:#ff6666;">Behavior Warnings</h3>
+    <div class="warning-panel">
+        <h3 style="margin-top:0;">Behavior Warnings</h3>
         <ul style="margin-bottom:0;">
             @foreach (var w in ViewBag.Warnings)
             {
                 <li>@w</li>
+            }
+        </ul>
+    </div>
+}
+
+<h2>Learning Insights</h2>
+
+@if (ViewBag.LearningInsights != null && ViewBag.LearningInsights.Count > 0)
+{
+    <div class="learning-panel">
+        <h3>Your Repeated Patterns</h3>
+        <ul>
+            @foreach (var insight in ViewBag.LearningInsights)
+            {
+                <li>@insight</li>
             }
         </ul>
     </div>
@@ -120,7 +157,6 @@
         <th>Error</th>
         <th>Times Occurred</th>
     </tr>
-
     @foreach (var item in ViewBag.CommonErrors)
     {
         <tr>
@@ -129,8 +165,6 @@
         </tr>
     }
 </table>
-
-<br />
 
 <h2>Recent Error Analysis</h2>
 
@@ -141,7 +175,6 @@
         <th>Explanation</th>
         <th>Date</th>
     </tr>
-
     @foreach (var item in Model)
     {
         <tr>
@@ -157,12 +190,10 @@
 
 <h2>AI Learning Mentor</h2>
 
-<div style="margin-top:20px;">
-
+<div>
     <textarea id="learningQuestion"
               rows="4"
-              placeholder="Ask AI about your past errors, concepts or best practices...">
-    </textarea>
+              placeholder="Ask AI about your past errors, concepts or best practices..."></textarea>
 
     <br /><br />
 
@@ -170,8 +201,7 @@
         Ask AI Mentor
     </button>
 
-    <div id="learningResponse" class="learning-box"></div>
-
+    <div id="learningResponse" class="mentor-box"></div>
 </div>
 
 <script>
@@ -181,12 +211,12 @@
 
         if (!question || question.trim() === "") {
             document.getElementById("learningResponse").innerText =
-            "Please enter a question first.";
+                "Please enter a question first.";
             return;
         }
 
         document.getElementById("learningResponse").innerText =
-        "AI is analyzing your question...\n\nPreparing structured learning response...";
+            "AI is analyzing your question...\n\nPreparing structured learning response...";
 
         try {
             const response = await fetch("/api/learning/ask", {
@@ -200,12 +230,11 @@
             });
 
             const data = await response.json();
-
             document.getElementById("learningResponse").innerText = data.reply;
         }
         catch {
             document.getElementById("learningResponse").innerText =
-            "Error connecting to AI service.";
+                "Error connecting to AI service.";
         }
     }
 </script>
