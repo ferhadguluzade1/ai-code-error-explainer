@@ -13,14 +13,18 @@ namespace Web.Controllers.API
         private readonly AiDecisionService _aiDecision;
         private readonly ErrorHistoryService _historyService;
         private readonly CodeFixService _codeFix;
+        private object fixedCode;
+        private object alternativeFix;
 
-        public ErrorApiController(ErrorHistoryService historyService)
+        public ErrorApiController(
+            ErrorHistoryService historyService)
         {
             _service = new ErrorAnalysisService();
             _aiDecision = new AiDecisionService();
             _historyService = historyService;
             _codeFix = new CodeFixService();
         }
+
 
         [HttpPost("analyze")]
         public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
@@ -91,6 +95,7 @@ namespace Web.Controllers.API
             */
 
             // HISTORY ADD
+            
             _historyService.Add(new ErrorHistory
             {
                 ErrorMessage = request.ErrorMessage,
@@ -115,13 +120,13 @@ namespace Web.Controllers.API
 
             return Ok(new
             {
-                explanation,
-                suggestion,
-                confidence = result.confidence,
-                riskLevel = riskLevel,
-                aiRequired = false,
-                fixedCode = fixes.primaryFix,
-                alternativeFix = fixes.alternativeFix
+                riskLevel = "LOW",
+                confidence = 90,
+                explanation = explanation,
+                suggestion = suggestion,
+                fixedCode = fixedCode,
+                alternativeFix = alternativeFix,
+                aiRequired = false
             });
         }
     }

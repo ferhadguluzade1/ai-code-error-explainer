@@ -1,114 +1,103 @@
 ﻿@{
-    ViewData["Title"] = "AI Code Error Explainer";
-    Layout = "_Layout";
+    ViewData["Title"] = "Dashboard";
 }
 
 <style>
-    .hero {
-        text-align: center;
-        padding: 80px 20px;
+    body {
+        background: #020617;
+        color: #e5e7eb;
+        font-family: Consolas, monospace;
     }
 
-        .hero h1 {
-            font-size: 42px;
-            color: #38bdf8;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 18px;
-            color: #94a3b8;
-            max-width: 700px;
-            margin: 0 auto 40px auto;
-        }
-
-    .cta-btn {
-        background: #38bdf8;
-        color: #020617;
-        padding: 14px 28px;
-        border-radius: 8px;
-        font-weight: bold;
-        text-decoration: none;
-        transition: 0.2s;
+    .dashboard {
+        max-width: 1100px;
+        margin: 60px auto;
+        padding: 20px;
     }
 
-        .cta-btn:hover {
-            background: #0ea5e9;
-        }
-
-    .features {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 80px;
-        gap: 30px;
+    h1 {
+        color: #38bdf8;
+        margin-bottom: 10px;
+        text-shadow: 0 0 12px rgba(56,189,248,0.2);
     }
 
-    .feature-card {
-        background: #0f172a;
-        padding: 30px;
-        border-radius: 12px;
+    .subtitle {
+        color: #94a3b8;
+        margin-bottom: 40px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+        gap: 25px;
+    }
+
+    .card {
+        background: #0b1220;
         border: 1px solid #1e293b;
-        flex: 1;
-        transition: 0.2s;
+        border-radius: 14px;
+        padding: 24px;
+        transition: .25s;
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
     }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 20px rgba(56,189,248,0.15);
             border-color: #38bdf8;
         }
 
-        .feature-card h3 {
+        .card h3 {
             color: #38bdf8;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
-        .feature-card p {
-            color: #94a3b8;
+        .card p {
+            color: #cbd5f5;
             font-size: 14px;
         }
-
-    @@media (max-width: 900px) {
-        .features
-
-    {
-        flex-direction: column;
-    }
-
-    }
 </style>
 
-<div class="hero">
+<div class="dashboard">
+
     <h1>AI Code Error Explainer</h1>
-    <p>
-        A smart interactive platform that analyzes coding errors,
-        suggests fixes, and helps developers learn from real mistakes.
-    </p>
-
-    <a href="/error" class="cta-btn">Start Analyzing Errors</a>
-</div>
-
-<div class="features">
-    <div class="feature-card">
-        <h3>Smart Error Analysis</h3>
-        <p>
-            Detect common programming errors and receive structured explanations,
-            risk levels, and possible fixes.
-        </p>
+    <div class="subtitle">
+        Analyze errors, learn patterns, and improve debugging skills.
     </div>
 
-    <div class="feature-card">
-        <h3>Learning Mentor</h3>
-        <p>
-            Explore past mistakes, understand root causes, and improve
-            your debugging skills over time.
-        </p>
+    <div class="grid">
+
+        <a href="/Error" class="card">
+            <h3>Error Analyzer</h3>
+            <p>
+                Paste your exception and code to receive structured explanations,
+                fixes and risk analysis.
+            </p>
+        </a>
+
+        <a href="/History" class="card">
+            <h3>Learning History</h3>
+            <p>
+                Review past errors, discover recurring mistakes and learning insights.
+            </p>
+        </a>
+
+        <a href="/History#mentor" class="card">
+            <h3>AI Learning Mentor</h3>
+            <p>
+                Ask contextual questions based on your debugging history.
+            </p>
+        </a>
+
+        <a href="/Home/About" class="card">
+            <h3>About Project</h3>
+            <p>
+                Learn how the system analyzes errors using MVC architecture.
+            </p>
+        </a>
+
     </div>
 
-    <div class="feature-card">
-        <h3>Behavior Tracking</h3>
-        <p>
-            Monitor repeated errors and identify patterns in your development
-            workflow.
-        </p>
-    </div>
 </div>

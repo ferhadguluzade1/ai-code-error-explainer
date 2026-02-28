@@ -59,6 +59,7 @@
             align-items: flex-start;
         }
 
+        
         .nav-links {
             margin-top: 15px;
         }
@@ -101,11 +102,33 @@
             .nav-links a:hover {
                 color: #38bdf8;
             }
+
+        .main-nav {
+            background: #020617;
+            padding: 14px 30px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+            .main-nav a {
+                color: #38bdf8;
+                margin-right: 20px;
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+                .main-nav a:hover {
+                    color: white;
+                }
+
+        .nav-item{
+            list-style-type:none;
+        }
     </style>
 </head>
 
 <body>
 
+    <!-- TOP NAVBAR -->
     <div class="navbar">
         <div class="logo">
             AI Code Error Explainer
@@ -118,20 +141,38 @@
         </div>
     </div>
 
+
+    <!-- PAGE CONTENT -->
     <div class="container">
         @RenderBody()
     </div>
 
-</body>
-<nav class="main-nav">
-    <div class="nav-container">
-        <a href="/" class="logo">AI Error Platform</a>
+    @RenderSection("Scripts", required: false)
+    <!-- SECOND NAV (IDENTITY NAV) -->
+    <nav class="main-nav">
+        <div class="nav-container">
 
-        <div class="nav-links">
-            <a href="/error">Analyzer</a>
-            <a href="/history">History</a>
-            <a href="/home/about">About</a>
+            <a href="/" class="logo">AI Error Platform</a>
+            <span style="opacity:0.6; font-size:13px;">
+                AI Assistant Online
+            </span>
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="/error">Analyzer</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/history">History</a>
+                </li>
+
+                <li class="nav-item">
+                    <a asp-controller="Home" asp-action="About">About</a>
+                </li>
+            </ul>
+
+            <partial name="_LoginPartial" />
+
         </div>
-    </div>
-</nav>
+    </nav>
+</body>
 </html>

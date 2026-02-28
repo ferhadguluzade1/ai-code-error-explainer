@@ -1,159 +1,224 @@
 ﻿@{
     ViewData["Title"] = "Error Analyzer";
 }
-
+<h1 style="color:red;">TEST VIEW WORKS</h1>
 <style>
     body {
         background-color: #020617 !important;
         color: #e5e7eb;
-        font-family: Consolas, monospace;
+        font-family: Consolas,monospace;
         margin: 0;
-    }
-
-    .container {
-        max-width: 1100px;
-        margin: 60px auto;
-        padding: 30px;
     }
 
     h2 {
         color: #38bdf8;
         margin-bottom: 25px;
+        text-shadow: 0 0 12px rgba(56,189,248,0.15);
     }
 
-    textarea {
+    /* ---------- LAYOUT ---------- */
+
+    .main-container {
+        max-width: 1100px;
+        margin: 60px auto;
+        padding: 20px;
+    }
+
+    .analyzer-wrapper {
+        display: flex;
+        gap: 30px;
+        align-items: stretch;
+    }
+
+    .panel {
+        flex: 1;
+        background: #0b1220;
+        border: 1px solid #1e293b;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 0 25px rgba(0,0,0,0.35);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .left-panel textarea {
         width: 100%;
-        background-color: #020617;
+        background: #020617;
         color: #e5e7eb;
         border: 1px solid #1e293b;
         padding: 14px;
         border-radius: 8px;
         margin-bottom: 18px;
-        font-size: 14px;
+        font-family: Consolas;
     }
 
-        textarea:focus {
-            outline: none;
-            border-color: #38bdf8;
-        }
-
-    button {
-        background-color: #38bdf8;
-        color: #020617;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-top: 10px;
+    textarea:focus {
+        outline: none;
+        border-color: #38bdf8;
     }
-
-        button:hover {
-            background-color: #0ea5e9;
-        }
 
     .mode-select {
         margin: 18px 0;
     }
 
+    button {
+        background: linear-gradient(135deg,#38bdf8,#6366f1);
+        color: white;
+        border: none;
+        padding: 12px 26px;
+        border-radius: 999px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: .25s;
+    }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 0 18px rgba(99,102,241,.35);
+        }
+
     .result-box {
-        background: linear-gradient(145deg, #0f172a, #111827);
+        background: #020617;
         border: 1px solid #1e293b;
-        padding: 20px;
-        border-radius: 12px;
-        margin-top: 25px;
-        white-space: pre-wrap;
-        min-height: 150px;
-        box-shadow: 0 0 20px rgba(56,189,248,0.1);
+        padding: 18px;
+        border-radius: 8px;
+        min-height: 420px;
     }
 
-    /* SPLIT LAYOUT */
-    .split-layout {
+    /* ---------- AI REPORT ---------- */
+
+    .ai-header {
         display: flex;
-        gap: 30px;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
     }
 
-    /* RESPONSIVE (Razor üçün @@media istifadə olunur) */
-    @@media (max-width: 900px) {
-        .split-layout {
+    .risk-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 16px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 13px;
+        letter-spacing: .5px;
+    }
+
+    .risk-low {
+        background: rgba(34,197,94,.15);
+        color: #22c55e;
+        border: 1px solid #22c55e;
+    }
+
+    .risk-medium {
+        background: rgba(234,179,8,.15);
+        color: #eab308;
+        border: 1px solid #eab308;
+    }
+
+    .risk-high {
+        background: rgba(239,68,68,.15);
+        color: #ef4444;
+        border: 1px solid #ef4444;
+    }
+
+    .ai-section {
+        margin-bottom: 18px;
+    }
+
+        .ai-section h4 {
+            color: #38bdf8;
+            margin-bottom: 6px;
+        }
+
+        .ai-section pre {
+            background: #020617;
+            border: 1px solid #1e293b;
+            padding: 12px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+        }
+
+    @@media(max-width:900px) {
+        .analyzer-wrapper {
             flex-direction: column;
         }
     }
 
-    .analyzer-wrapper {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
-        align-items: start;
-        margin-top: 40px;
+    .ai-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #38bdf8;
+        margin-bottom: 14px;
+        letter-spacing: 0.4px;
+        border-bottom: 1px solid #1e293b;
+        padding-bottom: 8px;
     }
 
-    .input-panel {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+    .panel {
+        animation: fadeIn 0.35s ease;
     }
 
-    .result-panel {
-        background: linear-gradient(145deg,#0b1220,#020617);
-        border: 1px solid #1e293b;
-        border-radius: 14px;
-        padding: 22px;
-        min-height: 320px;
-        box-shadow: 0 10px 35px rgba(0,0,0,0.35);
-    }
 
-    @@media (max-width: 1000px) {
-        .analyzer-wrapper
+    @@keyframes fadeIn {
+        from
 
     {
-        grid-template-columns: 1fr;
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     }
 
-    .split-layout {
-        display: flex;
-        gap: 40px;
-        align-items: flex-start;
-        margin-top: 30px;
+    .loading {
+        opacity: 0.6;
+        pointer-events: none;
     }
 
-        .split-layout > div {
-            flex: 1;
-        }
-
-    .result-box {
-        background: linear-gradient(145deg,#0b1220,#020617);
-        border: 1px solid #1e293b;
-        border-radius: 14px;
-        padding: 22px;
-        min-height: 340px;
-        box-shadow: 0 10px 35px rgba(0,0,0,0.35);
+    .ai-loading {
+        color: #38bdf8;
+        animation: pulse 1.2s infinite;
     }
 
-    @@media (max-width: 1000px) {
-        .split-layout
+    @@keyframes pulse {
+        0%
 
     {
-        flex-direction: column;
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.4;
     }
 
     }
 </style>
 
-<div class="container">
+
+<div class="main-container">
 
     <h2>AI Code Error Explainer</h2>
 
-    <div class="split-layout">
+    <div class="analyzer-wrapper">
 
-        <!-- LEFT PANEL -->
-        <div style="flex:1;">
+        <!-- LEFT -->
+        <div class="panel left-panel">
 
-            <textarea id="errorInput" rows="5" placeholder="Paste your error here..."></textarea>
+<textarea id="errorInput" rows="5"
+          placeholder="Paste your error here..."></textarea>
 
-            <textarea id="codeInput" rows="12" placeholder="Paste your code here..."></textarea>
+<textarea id="codeInput" rows="12"
+          placeholder="Paste your code here..."></textarea>
 
             <div class="mode-select">
                 <label>
@@ -167,82 +232,146 @@
                 </label>
             </div>
 
-            <button onclick="sendError()">Analyze Error</button>
-
+            <button id="analyzeBtn" onclick="sendError()">
+                Analyze Error
+            </button>
         </div>
 
-        <!-- RIGHT PANEL -->
-        <div style="flex:1;">
-            <div id="result" class="result-box"></div>
+        <!-- RIGHT -->
+        <div class="panel">
+
+            <div id="result" class="result-box">
+                <div style="opacity:0.6">
+                    Paste an error and press Analyze to get AI guidance.
+                </div>
+                <div id="aiReport" style="display:none;">
+                    <div class="ai-title">
+                        <span>AI Analysis Report</span>
+                    </div>
+                    <div class="ai-header">
+                        <span id="riskBadge" class="risk-badge">LOW</span>
+                        <span id="confidenceText"></span>
+                    </div>
+
+                    <div class="ai-section">
+                        <h4>Explanation</h4>
+<pre id="explanationText"></pre>
+                    </div>
+
+                    <div class="ai-section">
+                        <h4>Suggestion</h4>
+<pre id="suggestionText"></pre>
+                    </div>
+
+                    <div class="ai-section">
+                        <h4>Fixed Code</h4>
+<pre id="fixedCodeText"></pre>
+                    </div>
+
+                    <div class="ai-section" id="altFixBox" style="display:none;">
+                        <h4>Alternative Fix</h4>
+<pre id="altFixText"></pre>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
 
     </div>
-
 </div>
 
 <script>
-    async function sendError() {
 
-        const resultBox = document.getElementById("result");
+    let thinkingInterval;
+
+    async function sendError() {
 
         const errorText = document.getElementById("errorInput").value.trim();
         const codeText = document.getElementById("codeInput").value.trim();
-        const selectedMode = document.querySelector('input[name="mode"]:checked').value;
+        const selectedMode =
+            document.querySelector('input[name="mode"]:checked').value;
 
-        // boş input yoxlanması
+        const resultBox = document.getElementById("result");
+
         if (errorText === "" && codeText === "") {
             resultBox.innerText =
-                "Please provide at least an error message or a code snippet before analyzing.";
-            resultBox.style.borderColor = "#ef4444";
+                "Please provide an error or code snippet.";
             return;
         }
 
-        resultBox.innerText = "Analyzing...";
-        resultBox.style.borderColor = "#1e293b";
+        /* ---------- LOADING TEXT ---------- */
+            const btn = document.getElementById("analyzeBtn");
+    btn.classList.add("loading");
+    btn.innerText = "AI Thinking...";
+    btn.disabled = true;
+        resultBox.innerHTML = "<span id='thinking'>AI analyzing</span>";
 
-        const response = await fetch("/api/error/analyze", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                errorMessage: errorText,
-                codeSnippet: codeText,
-                explanationMode: selectedMode
-            })
-        });
+        let dots = 0;
 
-        const data = await response.json();
+        thinkingInterval = setInterval(() => {
+            const el = document.getElementById("thinking");
+            if (!el) return;
 
-        let output =
-            "Risk Level: [" + data.riskLevel.toUpperCase() + " RISK]\n\n" +
-            "Confidence: " + data.confidence + "%\n\n" +
-            "Explanation:\n" + data.explanation + "\n\n" +
-            "Suggestion:\n" + data.suggestion;
+            dots = (dots + 1) % 4;
+            el.innerText = "AI analyzing" + ".".repeat(dots);
+        }, 400);
 
-        if (data.fixedCode) {
-            output += "\n\nFixed Code:\n" + data.fixedCode;
+        try {
+
+            const response = await fetch("/api/error/analyze", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    errorMessage: errorText,
+                    codeSnippet: codeText,
+                    explanationMode: selectedMode
+                })
+            });
+
+            const data = await response.json();
+
+            clearInterval(thinkingInterval);
+
+            const riskLevel = (data.riskLevel || "LOW").toLowerCase();
+
+            const badge =
+                "<div class='risk-badge risk-" + riskLevel + "'>" +
+                data.riskLevel.toUpperCase() + " RISK</div>";
+
+            let output =
+                "Confidence: " + data.confidence + "%\n\n" +
+                "Explanation:\n" + data.explanation + "\n\n" +
+                "Suggestion:\n" + data.suggestion;
+
+            if (data.fixedCode)
+                output += "\n\nFixed Code:\n" + data.fixedCode;
+
+            if (data.alternativeFix)
+                output += "\n\nAlternative Fix:\n" + data.alternativeFix;
+
+            resultBox.innerHTML =
+                badge +
+                "<pre style='margin:0; white-space:pre-wrap;'>" +
+                output +
+                "</pre>";
         }
+        catch {
 
-        if (data.alternativeFix && data.alternativeFix.length > 0) {
-            output += "\n\nAlternative Fix:\n" + data.alternativeFix;
-        }
+            clearInterval(thinkingInterval);
 
-        if (data.aiRequired) {
-            output += "\n\nAI deeper analysis triggered...";
+            resultBox.innerText =
+                "Error connecting to analysis service.";
+                btn.classList.remove("loading");
+    btn.innerText = "Analyze Error";
+    btn.disabled = false;
         }
-
-        resultBox.innerText = output;
-
-        // risk vizual highlight
-        if (data.riskLevel === "High") {
-            resultBox.style.borderColor = "#ef4444";
-        }
-        else if (data.riskLevel === "Medium") {
-            resultBox.style.borderColor = "#f59e0b";
-        }
-        else {
-            resultBox.style.borderColor = "#22c55e";
-        }
+            const btn = document.getElementById("analyzeBtn");
+        btn.classList.remove("loading");
+    btn.innerText = "Analyze Error";
+    btn.disabled = false;
     }
+
 </script>

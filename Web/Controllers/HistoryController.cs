@@ -15,7 +15,7 @@ namespace Web.Controllers
         public IActionResult Index()
         {
             var history = _historyService.GetAll();
-
+          
             var mostCommonErrors = history
                 .GroupBy(x => x.ErrorMessage)
                 .Select(g => new
@@ -37,7 +37,12 @@ namespace Web.Controllers
             ViewBag.Warnings = warnings;
             var insights = _historyService.GetLearningInsights();
             ViewBag.LearningInsights = insights;
-
+            var stats = _historyService.GetUserStats();
+            ViewBag.Stats = stats;
+            var progress = _historyService.GetProgressInsights();
+            ViewBag.ProgressInsights = progress;
+            var stats1 = _historyService.GetDashboardStats();
+            ViewBag.Stats = stats1;
             return View(history);
         }
 
