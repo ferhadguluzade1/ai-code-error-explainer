@@ -1,89 +1,89 @@
-﻿using System.Net.Http;
+﻿using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using Web.Models;
 
 namespace Web.Services
 {
     public class OpenAiService
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpClient _http;
         private readonly string _apiKey;
 
         public OpenAiService(IConfiguration config)
         {
-            _httpClient = new HttpClient();
+            var handler = new HttpClientHandler()
+            {
+                ServerCertificateCustomValidationCallback =
+                    HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            };
+
+            _http = new HttpClient(handler);
+
             _apiKey = config["OpenAI:ApiKey"];
         }
 
-        public async Task<AiStructuredResponse> AnalyzeStructuredAsync(string input, string mode)
+        public async Task<string> AnalyzeAsync(string input, string mode)
         {
-            try
-            {
-                var prompt = $@"
-Return ONLY valid JSON.
-Do NOT include explanations outside JSON.
+            var prompt =
+$@"You are an AI programming mentor.
 
-Format:
+Explain the following error in {mode} mode.
 
-{{
-  ""Explanation"": ""..."",
-  ""RootCause"": ""..."",
-  ""BestPractice"": ""..."",
-  ""FixedCode"": ""..."",
-  ""AlternativeFix"": ""...""
-}}
-
-Mode: {mode}
-
-Input:
+Error:
 {input}
+
+Give:
+- Explanation
+- Root cause
+- Best practice fix
 ";
 
-                var requestBody = new
-                {
-                    model = "gpt-4o-mini",
-                    messages = new[]
-                    {
-                        new { role = "system", content = "You are a professional coding assistant." },
-                        new { role = "user", content = prompt }
-                    },
-                    temperature = 0.2
-                };
-
-                var json = JsonSerializer.Serialize(requestBody);
-
-                var request = new HttpRequestMessage(HttpMethod.Post,
-                    "https://api.openai.com/v1/chat/completions");
-
-                request.Headers.Add("Authorization", $"Bearer {_apiKey}");
-                request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var response = await _httpClient.SendAsync(request);
-
-                if (!response.IsSuccessStatusCode)
-                {
-                    return null;
-                }
-
-                var responseString = await response.Content.ReadAsStringAsync();
-
-                using var doc = JsonDocument.Parse(responseString);
-
-                var content = doc.RootElement
-                    .GetProperty("choices")[0]
-                    .GetProperty("message")
-                    .GetProperty("content")
-                    .GetString();
-
-                var structured = JsonSerializer.Deserialize<AiStructuredResponse>(content);
-
-                return structured;
-            }
-            catch
+            var body = new
             {
-                return null;
+                model = "gpt-4.1-mini",
+                messages = new[]
+                {
+                    new { role = "user", content = prompt }
+                }
+            };
+
+            var request = new HttpRequestMessage(
+                HttpMethod.Post,
+                "https://api.openai.com/v1/chat/completions"
+            );
+
+            request.Headers.Authorization =
+                new AuthenticationHeaderValue("Bearer", _apiKey);
+
+            request.Content = new StringContent(
+                JsonSerializer.Serialize(body),
+                Encoding.UTF8,
+                "application/json"
+            );
+            HttpResponseMessage response;
+
+            try
+            {
+                response = await _http.SendAsync(request);
             }
+            catch (Exception ex)
+            {
+                throw new Exception("OPENAI CONNECTION ERROR: " + ex.Message);
+            }
+            if (!response.IsSuccessStatusCode)
+            {
+                var err = await response.Content.ReadAsStringAsync();
+                throw new Exception(err);
+            }
+            var json = await response.Content.ReadAsStringAsync();
+
+            using var doc = JsonDocument.Parse(json);
+            
+            return doc.RootElement
+                .GetProperty("choices")[0]
+                .GetProperty("message")
+                .GetProperty("content")
+                .GetString();
         }
     }
 }

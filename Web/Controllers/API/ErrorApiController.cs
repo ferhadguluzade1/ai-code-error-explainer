@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Web.Services;
 using Web.Models;
-using Web.Data;
 
 namespace Web.Controllers.API
 {
@@ -13,101 +12,73 @@ namespace Web.Controllers.API
         private readonly AiDecisionService _aiDecision;
         private readonly ErrorHistoryService _historyService;
         private readonly CodeFixService _codeFix;
-        private object fixedCode;
-        private object alternativeFix;
+        private readonly OpenAiService _openAi;
 
         public ErrorApiController(
-            ErrorHistoryService historyService)
+            ErrorHistoryService historyService,
+            OpenAiService openAi)
         {
             _service = new ErrorAnalysisService();
             _aiDecision = new AiDecisionService();
             _historyService = historyService;
             _codeFix = new CodeFixService();
+            _openAi = openAi;
         }
-
 
         [HttpPost("analyze")]
         public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
         {
+            /* ---------- VALIDATION ---------- */
+
             if (string.IsNullOrWhiteSpace(request.ErrorMessage)
-      && string.IsNullOrWhiteSpace(request.CodeSnippet))
+                && string.IsNullOrWhiteSpace(request.CodeSnippet))
             {
                 return BadRequest(new
                 {
                     message = "No input provided."
                 });
             }
+
+            /* ---------- BASE ANALYSIS ---------- */
+
             var result = _service.Analyze(request.ErrorMessage);
 
             bool needsAi = _aiDecision.ShouldUseAI(result.confidence);
-
-            string explanation;
-
-            if (request.ExplanationMode == "beginner")
-            {
-                explanation = "BEGINNER MODE:\n" + result.explanation;
-            }
-            else
-            {
-                explanation = "DEVELOPER MODE:\n" + result.explanation;
-            }
+           
+            string explanation =
+                request.ExplanationMode == "beginner"
+                ? "BEGINNER MODE:\n" + result.explanation
+                : "DEVELOPER MODE:\n" + result.explanation;
 
             string suggestion = result.suggestion;
 
-            /*
-            if (needsAi)
-            {
-                var aiResponse = await _openAi.AnalyzeErrorAsync(
-                    request.ErrorMessage + "\nCODE:\n" + request.CodeSnippet,
-                    request.ExplanationMode
-                );
+            /* ---------- SAVE HISTORY ---------- */
 
-                explanation = aiResponse;
-                suggestion = "AI generated suggestion";
-            }
-            */
-
-            /*
-            if (needsAi)
-            {
-                var aiResponse = await _openAi.AnalyzeStructuredAsync(
-                    request.ErrorMessage + "\nCODE:\n" + request.CodeSnippet,
-                    request.ExplanationMode
-                );
-
-                if (aiResponse != null)
-                {
-                    explanation = aiResponse.Explanation + "\n\nRoot Cause:\n" + aiResponse.RootCause;
-
-                    suggestion = aiResponse.BestPractice;
-
-                    return Ok(new
-                    {
-                        explanation,
-                        suggestion,
-                        confidence = result.confidence,
-                        aiRequired = true,
-                        fixedCode = aiResponse.FixedCode,
-                        alternativeFix = aiResponse.AlternativeFix
-                    });
-                }
-            }
-            */
-
-            // HISTORY ADD
-            
             _historyService.Add(new ErrorHistory
             {
                 ErrorMessage = request.ErrorMessage,
                 CodeSnippet = request.CodeSnippet,
                 Explanation = explanation
             });
+            if (needsAi)
+            {
+                var aiText = _openAi
+                    .AnalyzeAsync(
+                        request.ErrorMessage + "\n" + request.CodeSnippet,
+                        request.ExplanationMode
+                    ).Result;
+
+                explanation += "\n\nAI Analysis:\n" + aiText;
+            }
+            /* ---------- CODE FIX GENERATION ---------- */
 
             var fixes = _codeFix.GenerateFix(
                 request.ErrorMessage,
                 request.CodeSnippet,
                 request.ExplanationMode
             );
+
+            /* ---------- RISK LEVEL ---------- */
 
             string riskLevel;
 
@@ -118,15 +89,24 @@ namespace Web.Controllers.API
             else
                 riskLevel = "High";
 
+            /* ---------- LEARNING INSIGHT (WOW FEATURE) ---------- */
+
+            var insight = _historyService
+                .GetLearningInsights()
+                .FirstOrDefault();
+
+            /* ---------- RESPONSE ---------- */
+
             return Ok(new
             {
-                riskLevel = "LOW",
-                confidence = 90,
+                riskLevel = riskLevel,
+                confidence = result.confidence,
                 explanation = explanation,
                 suggestion = suggestion,
-                fixedCode = fixedCode,
-                alternativeFix = alternativeFix,
-                aiRequired = false
+                fixedCode = fixes.FixedCode,
+                alternativeFix = fixes.AlternativeFix,
+                aiRequired = needsAi,
+                insight = insight
             });
         }
     }

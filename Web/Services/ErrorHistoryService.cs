@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Web.Data;
+using Web.Models;
 
-namespace Web.Models
+namespace Web.Services
 {
     public class ErrorHistoryService
     {
@@ -166,6 +167,44 @@ namespace Web.Models
                 Total = total,
                 MostCommon = mostCommon,
                 Score = learningScore
+            };
+        }
+        public object GetBehaviorInsights()
+        {
+            var history = _context.ErrorHistories.ToList();
+
+            if (!history.Any())
+                return null;
+
+            var total = history.Count;
+
+            var mostCommon = history
+                .GroupBy(x => ExtractExceptionType(x.ErrorMessage))
+                .OrderByDescending(g => g.Count())
+                .First();
+
+            var recent = history
+                .OrderByDescending(x => x.Date)
+                .Take(5)
+                .Select(x => ExtractExceptionType(x.ErrorMessage))
+                .ToList();
+
+            var older = history
+                .OrderBy(x => x.Date)
+                .Take(5)
+                .Select(x => ExtractExceptionType(x.ErrorMessage))
+                .ToList();
+
+            bool improving = older.Count(e => e == mostCommon.Key)
+                             >
+                             recent.Count(e => e == mostCommon.Key);
+
+            return new
+            {
+                TotalAnalyses = total,
+                MostCommonError = mostCommon.Key,
+                Count = mostCommon.Count(),
+                Improving = improving
             };
         }
     }

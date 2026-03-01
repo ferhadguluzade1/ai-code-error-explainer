@@ -202,6 +202,35 @@
     }
 
     }
+    /* ================= CONFIDENCE BAR ================= */
+
+    .confidence-wrapper {
+        margin-bottom: 18px;
+    }
+
+    .confidence-label {
+        font-size: 13px;
+        margin-bottom: 8px;
+        color: #94a3b8;
+    }
+
+    .confidence-bar {
+        width: 100%;
+        height: 12px;
+        background: #020617;
+        border-radius: 999px;
+        border: 1px solid #1e293b;
+        overflow: hidden;
+    }
+
+    .confidence-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #38bdf8, #6366f1);
+        box-shadow: 0 0 12px rgba(56,189,248,0.6);
+        border-radius: 999px;
+        transition: width 0.8s ease;
+    }
 </style>
 
 
@@ -250,7 +279,20 @@
                     </div>
                     <div class="ai-header">
                         <span id="riskBadge" class="risk-badge">LOW</span>
-                        <span id="confidenceText"></span>
+                    </div>
+
+                    <!-- CONFIDENCE BAR -->
+                    <div class="confidence-wrapper">
+
+                        <div class="confidence-label">
+                            AI Confidence:
+                            <span id="confidenceText">0%</span>
+                        </div>
+
+                        <div class="confidence-bar">
+                            <div id="confidenceFill" class="confidence-fill"></div>
+                        </div>
+
                     </div>
 
                     <div class="ai-section">
@@ -283,28 +325,38 @@
 
 <script>
 
-    let thinkingInterval;
+    let thinkingInterval = null;
 
     async function sendError() {
 
-        const errorText = document.getElementById("errorInput").value.trim();
-        const codeText = document.getElementById("codeInput").value.trim();
+        const errorText =
+            document.getElementById("errorInput").value.trim();
+
+        const codeText =
+            document.getElementById("codeInput").value.trim();
+
         const selectedMode =
             document.querySelector('input[name="mode"]:checked').value;
 
         const resultBox = document.getElementById("result");
+        const btn = document.getElementById("analyzeBtn");
 
-        if (errorText === "" && codeText === "") {
+        if (!errorText && !codeText) {
             resultBox.innerText =
                 "Please provide an error or code snippet.";
             return;
         }
 
-        /* ---------- LOADING TEXT ---------- */
-            const btn = document.getElementById("analyzeBtn");
-    btn.classList.add("loading");
-    btn.innerText = "AI Thinking...";
-    btn.disabled = true;
+        /* ---------- BUTTON STATE ---------- */
+
+        if (btn) {
+            btn.classList.add("loading");
+            btn.innerText = "AI Thinking...";
+            btn.disabled = true;
+        }
+
+        /* ---------- LOADING ---------- */
+
         resultBox.innerHTML = "<span id='thinking'>AI analyzing</span>";
 
         let dots = 0;
@@ -331,9 +383,14 @@
                 })
             });
 
+            if (!response.ok)
+                throw new Error("API response failed");
+
             const data = await response.json();
 
             clearInterval(thinkingInterval);
+
+            /* ---------- RISK BADGE ---------- */
 
             const riskLevel = (data.riskLevel || "LOW").toLowerCase();
 
@@ -341,8 +398,9 @@
                 "<div class='risk-badge risk-" + riskLevel + "'>" +
                 data.riskLevel.toUpperCase() + " RISK</div>";
 
+            /* ---------- OUTPUT ---------- */
+
             let output =
-                "Confidence: " + data.confidence + "%\n\n" +
                 "Explanation:\n" + data.explanation + "\n\n" +
                 "Suggestion:\n" + data.suggestion;
 
@@ -354,24 +412,39 @@
 
             resultBox.innerHTML =
                 badge +
-                "<pre style='margin:0; white-space:pre-wrap;'>" +
+                "<div class='confidence-wrapper'>" +
+                "<div class='confidence-label'>AI Confidence: " +
+                "<span id='confidenceText'>" + data.confidence + "%</span></div>" +
+                "<div class='confidence-bar'>" +
+                "<div id='confidenceFill' class='confidence-fill'></div>" +
+                "</div></div>" +
+                "<pre style='white-space:pre-wrap;margin:0'>" +
                 output +
                 "</pre>";
-        }
-        catch {
 
-            clearInterval(thinkingInterval);
+            /* ---------- CONFIDENCE ANIMATION ---------- */
+
+            setTimeout(() => {
+                const fill = document.getElementById("confidenceFill");
+                if (fill)
+                    fill.style.width = data.confidence + "%";
+            }, 200);
+        }
+        catch (err) {
+
+            console.error(err);
 
             resultBox.innerText =
                 "Error connecting to analysis service.";
-                btn.classList.remove("loading");
-    btn.innerText = "Analyze Error";
-    btn.disabled = false;
         }
-            const btn = document.getElementById("analyzeBtn");
-        btn.classList.remove("loading");
-    btn.innerText = "Analyze Error";
-    btn.disabled = false;
+
+        /* ---------- BUTTON RESET ---------- */
+
+        if (btn) {
+            btn.classList.remove("loading");
+            btn.innerText = "Analyze Error";
+            btn.disabled = false;
+        }
     }
 
 </script>

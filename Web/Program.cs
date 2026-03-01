@@ -1,7 +1,9 @@
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Web.Data;
 using Web.Models;
+using Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,8 @@ builder.Services.AddDefaultIdentity<AppUser>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<ErrorHistoryService>();
+builder.Services.AddScoped<SkillAssessmentService>();
+builder.Services.AddHttpClient<OpenAiService>();
 var app = builder.Build();
 
 app.UseHttpsRedirection();

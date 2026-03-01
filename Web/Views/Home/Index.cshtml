@@ -2,7 +2,7 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<style>
+<style>/* 
     body {
         background: #020617;
         color: #e5e7eb;
@@ -57,10 +57,34 @@
         .card p {
             color: #cbd5f5;
             font-size: 14px;
-        }
+        } */
+
+    .dashboard {
+        display: flex;
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .card {
+        flex: 1;
+        background: #0b1220;
+        border: 1px solid #1e293b;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .action-btn {
+        padding: 12px 24px;
+        background: linear-gradient(135deg,#38bdf8,#6366f1);
+        color: white;
+        border-radius: 999px;
+        text-decoration: none;
+        margin-right: 15px;
+    }
 </style>
 
-<div class="dashboard">
+@* <div class="dashboard">
 
     <h1>AI Code Error Explainer</h1>
     <div class="subtitle">
@@ -100,4 +124,37 @@
 
     </div>
 
+</div>
+ *@
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h2>Welcome back, @User.Identity.Name 👋</h2>
+}
+else
+{
+    <h2>Welcome to AI Error Platform</h2>
+}
+<div class="dashboard">
+
+    <div class="card">
+        <h3>System Status</h3>
+        <p>@ViewBag.SystemStatus</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Analyses</h3>
+        <p>@ViewBag.TotalAnalyses</p>
+    </div>
+
+    <div class="card">
+        <h3>Learning State</h3>
+        <p>@ViewBag.LearningState</p>
+    </div>
+
+</div>
+
+<div class="quick-actions">
+    <a href="/error" class="action-btn">Analyze Error</a>
+    <a href="/history" class="action-btn">View History</a>
 </div>

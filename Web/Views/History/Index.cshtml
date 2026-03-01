@@ -146,6 +146,182 @@
     }
 
     }
+    /* HISTORY ACCORDION */
+
+    .history-card {
+        border: 1px solid #1e293b;
+        border-radius: 10px;
+        margin-bottom: 14px;
+        overflow: hidden;
+        background: #020617;
+    }
+
+    .history-header {
+        padding: 14px 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #0f172a;
+        transition: 0.2s;
+    }
+
+        .history-header:hover {
+            background: #111827;
+        }
+
+    .error-title {
+        flex: 1;
+        margin-left: 10px;
+        color: #38bdf8;
+    }
+
+    .history-date {
+        color: #94a3b8;
+        font-size: 13px;
+    }
+
+    .arrow {
+        transition: transform 0.25s ease;
+    }
+
+    .history-card.open .arrow {
+        transform: rotate(90deg);
+    }
+
+    .history-body {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+        padding: 0 16px;
+    }
+
+    .history-card.open .history-body {
+        max-height: 800px;
+        padding: 16px;
+    }
+
+    .history-section {
+        margin-bottom: 14px;
+    }
+
+        .history-section pre {
+            background: #020617;
+            border: 1px solid #1e293b;
+            padding: 12px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+        }
+
+    .trend-box {
+        background: linear-gradient(135deg,#0f172a,#020617);
+        border-left: 4px solid #38bdf8;
+        padding: 18px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow: 0 0 20px rgba(56,189,248,0.15);
+    }
+
+        .trend-box h3 {
+            margin-top: 0;
+            color: #38bdf8;
+        }
+
+        .trend-box li {
+            margin-bottom: 8px;
+            color: #e5e7eb;
+        }
+    /* SECTION SEPARATION */
+
+    .section-divider {
+        height: 1px;
+        margin: 45px 0 35px 0;
+        background: linear-gradient( to right, transparent, #1e293b, transparent );
+    }
+
+    .accordion-item {
+        margin-bottom: 14px;
+    }
+
+    .accordion-header {
+        cursor: pointer;
+        padding: 14px;
+        background: #0b1220;
+        border: 1px solid #1e293b;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+        .accordion-header:hover {
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56,189,248,0.15);
+        }
+
+    .accordion-content {
+        margin-top: 8px;
+    }
+    /* BEHAVIOR PANEL */
+
+    .behavior-panel {
+        margin-bottom: 40px;
+        padding: 22px;
+        background: linear-gradient(135deg,#020617,#0b1220);
+        border: 1px solid #1e293b;
+        border-radius: 12px;
+        box-shadow: 0 0 30px rgba(56,189,248,0.08);
+    }
+
+        .behavior-panel h3 {
+            color: #38bdf8;
+            margin-bottom: 18px;
+        }
+
+    .behavior-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+        gap: 18px;
+    }
+
+    .behavior-card {
+        background: #020617;
+        border: 1px solid #1e293b;
+        padding: 16px;
+        border-radius: 10px;
+        min-height: 90px;
+    }
+
+        .behavior-card span {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .behavior-card strong {
+            display: block;
+            margin-top: 6px;
+            font-size: 18px;
+            color: #e5e7eb;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+    .skill-box {
+        margin-bottom: 25px;
+        padding: 18px;
+        border: 1px solid #1e293b;
+        border-left: 4px solid #6366f1;
+        border-radius: 10px;
+        background: #020617;
+    }
+
+    .skill-badge {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 6px 16px;
+        border-radius: 999px;
+        background: linear-gradient(135deg,#6366f1,#38bdf8);
+        color: white;
+        font-weight: 600;
+    }
 </style>
 
 @if (ViewBag.Warnings != null && ViewBag.Warnings.Count > 0)
@@ -208,7 +384,7 @@
         <p>Total Analyses: <b>@ViewBag.Stats.Total</b></p>
         <p>Most Common Error: <b>@ViewBag.Stats.MostCommon</b></p>
         <p>Learning Level: <b>@ViewBag.Stats.Score</b></p>
-        <p>Last Activity: <b>@ViewBag.Stats.LastActivity</b></p>
+       
     </div>
 }
 @if (ViewBag.ProgressInsights != null && ViewBag.ProgressInsights.Count > 0)
@@ -233,6 +409,47 @@
         </ul>
     </div>
 }
+@if (ViewBag.Behavior != null)
+{
+    <div class="behavior-panel">
+        <div class="skill-box">
+            <h3>Your AI Skill Level</h3>
+            <span class="skill-badge">
+                @ViewBag.SkillLevel
+            </span>
+        </div>
+        <h3>AI Behavior Intelligence</h3>
+
+        <div class="behavior-grid">
+
+            <div class="behavior-card">
+                <span>Total Analyses</span>
+                <strong>@ViewBag.Behavior.TotalAnalyses</strong>
+            </div>
+
+            <div class="behavior-card">
+                <span>Most Frequent Error</span>
+                <strong>@ViewBag.Behavior.MostCommonError</strong>
+            </div>
+
+            <div class="behavior-card">
+                <span>Occurrences</span>
+                <strong>@ViewBag.Behavior.Count</strong>
+            </div>
+
+            <div class="behavior-card">
+                <span>Learning Trend</span>
+                <strong>
+                    @(ViewBag.Behavior.Improving
+                                    ? "Improving 📈"
+                                    : "Needs Practice 📚")
+            </strong>
+        </div>
+
+        </div>
+
+    </div>
+}
 <h2>Most Frequent Errors</h2>
 
 <table>
@@ -249,26 +466,49 @@
     }
 </table>
 
+<div class="section-divider"></div>
+
 <h2>Recent Error Analysis</h2>
 
-<table>
-    <tr>
-        <th>Error</th>
-        <th>Code</th>
-        <th>Explanation</th>
-        <th>Date</th>
-    </tr>
+<div class="history-list">
+
     @foreach (var item in Model)
     {
-        <tr>
-            <td>@item.ErrorMessage</td>
-            <td>@item.CodeSnippet</td>
-            <td>@item.Explanation</td>
-            <td>@item.Date</td>
-        </tr>
-    }
-</table>
+        <div class="history-card">
 
+            <div class="history-header"
+                 onclick="toggleHistory(this)">
+
+                <span class="arrow">▶</span>
+
+                <span class="error-title">
+                    @item.ErrorMessage
+                </span>
+
+                <span class="history-date">
+                    @item.Date.ToString("dd MMM yyyy HH:mm")
+                </span>
+
+            </div>
+
+            <div class="history-body">
+
+                <div class="history-section">
+                    <strong>Code</strong>
+                    <pre>@item.CodeSnippet</pre>
+                </div>
+
+                <div class="history-section">
+                    <strong>Explanation</strong>
+                    <pre>@item.Explanation</pre>
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>
 <hr />
 
 <h2>
@@ -324,5 +564,12 @@
             document.getElementById("learningResponse").innerText =
                 "Error connecting to AI service.";
         }
+    }
+    function toggleHistory(header) 
+    {
+
+        const card = header.parentElement;
+
+        card.classList.toggle("open");
     }
 </script>
