@@ -1,0 +1,28 @@
+# ======================
+# BUILD FILES
+# ======================
+bin/
+obj/
+.vs/
+
+# ======================
+# LOCAL DATABASE
+# ======================
+*.db
+
+# ======================
+# APP SETTINGS (SECRETS)
+# ======================
+appsettings.json
+appsettings.Development.json
+
+# ======================
+# USER SECRETS
+# ======================
+secrets.json
+
+# ======================
+# OS FILES
+# ======================
+.DS_Store
+Thumbs.db
