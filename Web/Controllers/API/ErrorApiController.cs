@@ -338,6 +338,7 @@ namespace Web.Controllers.API
             }
         }
         */
+        /*
         [HttpPost("analyze")]
         public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
         {
@@ -357,6 +358,250 @@ namespace Web.Controllers.API
             catch (Exception ex)
             {
                 return StatusCode(500, ex.ToString());
+            }
+        }
+        */
+        /*
+        [HttpPost("analyze")]
+        public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.ErrorMessage)
+                && string.IsNullOrWhiteSpace(request.CodeSnippet))
+            {
+                return BadRequest(new
+                {
+                    message = "No input provided."
+                });
+            }
+
+            var result = _service.Analyze(request.ErrorMessage);
+
+            string explanation;
+            string suggestion;
+            int confidence;
+
+            if (result.confidence <= 0)
+            {
+                explanation = "Input could not be classified as a known exception.";
+                suggestion = "Provide a valid .NET exception message.";
+                confidence = 40;
+            }
+            else
+            {
+                explanation = request.ExplanationMode == "beginner"
+                    ? "BEGINNER MODE:\n" + result.explanation
+                    : "DEVELOPER MODE:\n" + result.explanation;
+
+                suggestion = result.suggestion;
+                confidence = result.confidence;
+            }
+
+            var fixes = _codeFix.GenerateFix(
+                request.ErrorMessage,
+                request.CodeSnippet,
+                request.ExplanationMode
+            );
+
+            string riskLevel =
+                confidence >= 80 ? "Low" :
+                confidence >= 50 ? "Medium" :
+                "High";
+
+            // HISTORY SAVE (ARTIQ HƏR HALDA İŞLƏYİR)
+            _historyService.Add(new ErrorHistory
+            {
+                ErrorMessage = request.ErrorMessage,
+                CodeSnippet = request.CodeSnippet,
+                Explanation = explanation,
+                Date = DateTime.Now
+            });
+
+            return Ok(new
+            {
+                riskLevel = riskLevel,
+                confidence = confidence,
+                explanation = explanation,
+                suggestion = suggestion,
+                fixedCode = fixes?.FixedCode,
+                alternativeFix = fixes?.AlternativeFix,
+                aiRequired = false
+            });
+        }*/
+
+        /*
+        [HttpPost("analyze")]
+        public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(request.ErrorMessage)
+                    && string.IsNullOrWhiteSpace(request.CodeSnippet))
+                {
+                    return BadRequest(new { message = "No input provided." });
+                }
+
+                var result = _service.Analyze(request.ErrorMessage);
+
+                string explanation;
+                string suggestion;
+                int confidence;
+
+                if (result.confidence <= 0)
+                {
+                    explanation = "Input could not be classified as a known exception.";
+                    suggestion = "Provide a valid .NET exception message.";
+                    confidence = 40;
+                }
+                else
+                {
+                    explanation = request.ExplanationMode == "beginner"
+                        ? "BEGINNER MODE:\n" + result.explanation
+                        : "DEVELOPER MODE:\n" + result.explanation;
+
+                    suggestion = result.suggestion;
+                    confidence = result.confidence;
+                }
+                bool recognized = result.confidence > 30;
+                var fixes = _codeFix.GenerateFix(
+      request.ErrorMessage,
+      request.CodeSnippet,
+      request.ExplanationMode
+  );
+
+                string riskLevel =
+                    confidence >= 80 ? "Low" :
+                    confidence >= 50 ? "Medium" :
+                    "High";
+
+                _historyService.Add(new ErrorHistory
+                {
+                    ErrorMessage = request.ErrorMessage,
+                    CodeSnippet = request.CodeSnippet,
+                    Explanation = explanation,
+                    Date = DateTime.Now
+                });
+
+                return Ok(new
+                {
+                    riskLevel,
+                    confidence,
+                    explanation,
+                    suggestion,
+                    fixedCode = recognized ? fixes?.FixedCode : null,
+                    alternativeFix = recognized ? fixes?.AlternativeFix : null,
+                    aiRequired = false
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new
+                {
+                    riskLevel = "Medium",
+                    confidence = 50,
+                    explanation = "System handled an unexpected error safely.",
+                    suggestion = "Try again with a clearer exception message.",
+                    fixedCode = "",
+                    alternativeFix = "",
+                    aiRequired = false
+                });
+            }
+        }
+        */
+        [HttpPost("analyze")]
+        public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(request.ErrorMessage)
+                    && string.IsNullOrWhiteSpace(request.CodeSnippet))
+                {
+                    return BadRequest(new { message = "No input provided." });
+                }
+
+                var result = _service.Analyze(request.ErrorMessage);
+
+                string explanation;
+                string suggestion;
+                int confidence;
+
+                /* ---------- UNKNOWN INPUT ---------- */
+
+                if (result.confidence <= 0)
+                {
+                    explanation = "Input could not be classified as a known .NET exception.";
+                    suggestion = "Provide a valid exception message or code snippet.";
+                    confidence = 0;
+                }
+                else
+                {
+                    explanation = request.ExplanationMode == "beginner"
+                        ? "BEGINNER MODE:\n" + result.explanation
+                        : "DEVELOPER MODE:\n" + result.explanation;
+
+                    suggestion = result.suggestion;
+                    confidence = result.confidence;
+                }
+
+                /* ---------- RECOGNITION FLAG ---------- */
+
+                bool recognized = confidence > 30;
+
+                /* ---------- FIX GENERATION ---------- */
+
+                FixResult fixes = null;
+
+                if (recognized)
+                {
+                    fixes = _codeFix.GenerateFix(
+                        request.ErrorMessage,
+                        request.CodeSnippet,
+                        request.ExplanationMode
+                    );
+                }
+
+                /* ---------- RISK LEVEL ---------- */
+
+                string riskLevel =
+                    confidence >= 80 ? "Low" :
+                    confidence >= 50 ? "Medium" :
+                    confidence > 0 ? "High" :
+                    "Unknown";
+
+                /* ---------- SAVE HISTORY ---------- */
+
+                _historyService.Add(new ErrorHistory
+                {
+                    ErrorMessage = request.ErrorMessage,
+                    CodeSnippet = request.CodeSnippet,
+                    Explanation = explanation,
+                    Date = DateTime.Now
+                });
+
+                /* ---------- RESPONSE ---------- */
+
+                return Ok(new
+                {
+                    riskLevel,
+                    confidence,
+                    explanation,
+                    suggestion,
+                    fixedCode = fixes?.FixedCode,
+                    alternativeFix = fixes?.AlternativeFix,
+                    aiRequired = false
+                });
+            }
+            catch (Exception)
+            {
+                return Ok(new
+                {
+                    riskLevel = "Medium",
+                    confidence = 50,
+                    explanation = "System handled an unexpected error safely.",
+                    suggestion = "Try again with a clearer exception message.",
+                    fixedCode = "",
+                    alternativeFix = "",
+                    aiRequired = false
+                });
             }
         }
     }

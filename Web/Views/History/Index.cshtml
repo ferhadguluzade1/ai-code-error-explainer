@@ -2,10 +2,24 @@
 @{
     ViewData["Title"] = "Error History";
 }
+<div class="dashboard-stat">
+    Total Analyses: @Model.Errors.Count
+</div>
 @{
     var stats = ViewBag.Stats;
 }
 <h3>Learning Progress</h3>
+@if (Model.TrendInsights != null && Model.TrendInsights.Any())
+{
+    <h3>AI Learning Insights</h3>
+
+    <ul class="insight-list">
+        @foreach (var insight in Model.TrendInsights)
+        {
+            <li>@insight</li>
+        }
+    </ul>
+}
 <p>
     You have analyzed <b>@Model.Errors.Count()</b> errors using AI.
 </p>
@@ -24,6 +38,10 @@
         text-shadow: 0 0 12px rgba(56,189,248,0.15);
     }
 
+    .insight-list {
+        margin-top: 10px;
+        color: #38bdf8;
+    }
     table {
         width: 100%;
         border-collapse: collapse;

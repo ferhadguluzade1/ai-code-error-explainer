@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Error Analyzer";
 }
-<h1 style="color:red;">TEST VIEW WORKS</h1>
+
 <style>
     body {
         background-color: #020617 !important;
@@ -231,6 +231,29 @@
         border-radius: 999px;
         transition: width 0.8s ease;
     }
+
+    .ai-thinking {
+        color: #38bdf8;
+        font-weight: 600;
+        animation: pulse 1s infinite;
+    }
+
+    @@keyframes pulse {
+        0%
+
+    {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.3;
+    }
+
+    }
 </style>
 
 
@@ -329,21 +352,19 @@
 
     async function sendError() {
 
-        const errorText =
-            document.getElementById("errorInput").value.trim();
-
-        const codeText =
-            document.getElementById("codeInput").value.trim();
-
+        const errorText = document.getElementById("errorInput").value.trim();
+        const codeText = document.getElementById("codeInput").value.trim();
         const selectedMode =
             document.querySelector('input[name="mode"]:checked').value;
 
         const resultBox = document.getElementById("result");
         const btn = document.getElementById("analyzeBtn");
 
-        if (!errorText && !codeText) {
+        /* ---------- INPUT VALIDATION ---------- */
+
+        if (errorText.length < 5 && codeText.length < 5) {
             resultBox.innerText =
-                "Please provide an error or code snippet.";
+                "Please provide a meaningful error message or code snippet.";
             return;
         }
 
@@ -355,18 +376,19 @@
             btn.disabled = true;
         }
 
-        /* ---------- LOADING ---------- */
+        /* ---------- LOADING UI ---------- */
 
-        resultBox.innerHTML = "<span id='thinking'>AI analyzing</span>";
+        resultBox.innerHTML =
+            "<div class='ai-thinking'>AI analyzing your error...</div>";
 
         let dots = 0;
 
         thinkingInterval = setInterval(() => {
-            const el = document.getElementById("thinking");
+            const el = document.querySelector(".ai-thinking");
             if (!el) return;
 
             dots = (dots + 1) % 4;
-            el.innerText = "AI analyzing" + ".".repeat(dots);
+            el.innerText = "AI analyzing your error" + ".".repeat(dots);
         }, 400);
 
         try {
@@ -388,21 +410,25 @@
 
             const data = await response.json();
 
-            clearInterval(thinkingInterval);
+            /* ---------- STOP LOADING ---------- */
+
+            if (thinkingInterval)
+                clearInterval(thinkingInterval);
 
             /* ---------- RISK BADGE ---------- */
 
-            const riskLevel = (data.riskLevel || "LOW").toLowerCase();
+            const riskLevel = (data.riskLevel || "low").toLowerCase();
 
             const badge =
                 "<div class='risk-badge risk-" + riskLevel + "'>" +
-                data.riskLevel.toUpperCase() + " RISK</div>";
+                (data.riskLevel || "LOW").toUpperCase() +
+                " RISK</div>";
 
-            /* ---------- OUTPUT ---------- */
+            /* ---------- OUTPUT TEXT ---------- */
 
             let output =
-                "Explanation:\n" + data.explanation + "\n\n" +
-                "Suggestion:\n" + data.suggestion;
+                "Explanation:\n" + (data.explanation || "No explanation available.") + "\n\n" +
+                "Suggestion:\n" + (data.suggestion || "No suggestion available.");
 
             if (data.fixedCode)
                 output += "\n\nFixed Code:\n" + data.fixedCode;
@@ -410,11 +436,13 @@
             if (data.alternativeFix)
                 output += "\n\nAlternative Fix:\n" + data.alternativeFix;
 
+            /* ---------- RENDER RESULT ---------- */
+
             resultBox.innerHTML =
                 badge +
                 "<div class='confidence-wrapper'>" +
                 "<div class='confidence-label'>AI Confidence: " +
-                "<span id='confidenceText'>" + data.confidence + "%</span></div>" +
+                "<span id='confidenceText'>" + (data.confidence || 0) + "%</span></div>" +
                 "<div class='confidence-bar'>" +
                 "<div id='confidenceFill' class='confidence-fill'></div>" +
                 "</div></div>" +
@@ -427,12 +455,16 @@
             setTimeout(() => {
                 const fill = document.getElementById("confidenceFill");
                 if (fill)
-                    fill.style.width = data.confidence + "%";
+                    fill.style.width = (data.confidence || 0) + "%";
             }, 200);
+
         }
         catch (err) {
 
             console.error(err);
+
+            if (thinkingInterval)
+                clearInterval(thinkingInterval);
 
             resultBox.innerText =
                 "Error connecting to analysis service.";
