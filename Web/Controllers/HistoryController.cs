@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Web.Models;
 using Web.Services;
 
 namespace Web.Controllers
@@ -28,64 +29,50 @@ namespace Web.Controllers
         {
             var history = _historyService.GetAll();
 
-            var mostCommonErrors = history
-      .GroupBy(x => x.ErrorMessage)
-      .Select(g => new
-      {
-          Error = g.Key,
-          Count = g.Count(),
-          LastActivity = g.Max(x => x.Date)
-      })
-      .OrderByDescending(x => x.Count)
-      .ToList();
-
-
-            ViewBag.CommonErrors = mostCommonErrors;
+            var commonErrors = history
+                .GroupBy(x => x.ErrorMessage)
+                .Select(g => new CommonErrorViewModel
+                {
+                    Error = g.Key,
+                    Count = g.Count(),
+                    LastActivity = g.Max(x => x.Date)
+                })
+                .OrderByDescending(x => x.Count)
+                .ToList();
 
             var trendInsights = history
-    .GroupBy(x => ExtractExceptionType(x.ErrorMessage))
-    .Select(g => new
-    {
-        Error = g.Key,
-        Count = g.Count()
-    })
-    .OrderByDescending(x => x.Count)
-    .Take(3)
-    .Select(x =>
-    {
-        if (x.Count >= 5)
-            return $"⚠ You frequently encounter '{x.Error}'. Focus on mastering it.";
+                .GroupBy(x => x.ErrorMessage)
+                .Select(g => $"{g.Key} appears {g.Count()} times.")
+                .ToList();
 
-        if (x.Count >= 3)
-            return $"📈 '{x.Error}' appears repeatedly — improvement opportunity.";
-
-        return $"✅ '{x.Error}' appears under control.";
-    })
-    .ToList();
-
-            ViewBag.TrendInsights = trendInsights;
             var warnings = history
-            .GroupBy(x => x.ErrorMessage)
-            .Where(g => g.Count() >= 3)
-            .Select(g => $"You often encounter: {g.Key}")
-            .ToList();
+                .GroupBy(x => x.ErrorMessage)
+                .Where(g => g.Count() >= 3)
+                .Select(g => $"You often encounter: {g.Key}")
+                .ToList();
 
-            ViewBag.Warnings = warnings;
             var insights = _historyService.GetLearningInsights();
-            ViewBag.LearningInsights = insights;
-            var stats = _historyService.GetUserStats();
-            ViewBag.Stats = stats;
-            var progress = _historyService.GetProgressInsights();
-            ViewBag.ProgressInsights = progress;
             var stats1 = _historyService.GetDashboardStats();
-            ViewBag.Stats = stats1;
+            var progress = _historyService.GetProgressInsights();
             var behavior = _historyService.GetBehaviorInsights();
-            ViewBag.Behavior = behavior;
-            var skillService =
-    HttpContext.RequestServices.GetService<SkillAssessmentService>();
 
-            ViewBag.SkillLevel = skillService.GetSkillLevel();
-            return View(history);
+            var skillService = HttpContext.RequestServices
+                .GetService<SkillAssessmentService>();
+
+            var model = new Web.Models.HistoryViewModel
+            {
+                Errors = history,
+                CommonErrors = commonErrors,
+                Warnings = warnings,
+                LearningInsights = insights,
+                TrendInsights = trendInsights,
+                Stats = stats1,
+                ProgressInsights = progress,
+                Behavior = behavior,
+                SkillLevel = skillService?.GetSkillLevel()
+            };
+
+            return View(model);
         }
 
     }

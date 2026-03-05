@@ -24,7 +24,7 @@ namespace Web.Services
             _context.ErrorHistories.Add(error);
             _context.SaveChanges();
 
-            
+            Console.WriteLine("ERROR SAVED");
         }
 
         public List<ErrorHistory> GetAll()
@@ -169,7 +169,7 @@ namespace Web.Services
                 Score = learningScore
             };
         }
-        public object GetBehaviorInsights()
+        public BehaviorInsights GetBehaviorInsights()
         {
             var history = _context.ErrorHistories.ToList();
 
@@ -199,7 +199,7 @@ namespace Web.Services
                              >
                              recent.Count(e => e == mostCommon.Key);
 
-            return new
+            return new BehaviorInsights
             {
                 TotalAnalyses = total,
                 MostCommonError = mostCommon.Key,

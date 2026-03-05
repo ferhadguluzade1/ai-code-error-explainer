@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Web.Services;
 using Web.Models;
+using Web.Services;
 
 namespace Web.Controllers.API
 {
@@ -12,24 +12,30 @@ namespace Web.Controllers.API
         private readonly AiDecisionService _aiDecision;
         private readonly ErrorHistoryService _historyService;
         private readonly CodeFixService _codeFix;
-        private readonly OpenAiService _openAi;
+        /*
+        private readonly OpenAiService _openAi;*/
 
+        /*
         public ErrorApiController(
             ErrorHistoryService historyService,
             OpenAiService openAi)
         {
             _service = new ErrorAnalysisService();
-            _aiDecision = new AiDecisionService();
             _historyService = historyService;
             _codeFix = new CodeFixService();
             _openAi = openAi;
+        }*/
+        public ErrorApiController(ErrorHistoryService historyService)
+        {
+            _service = new ErrorAnalysisService();
+            _aiDecision = new AiDecisionService();
+            _historyService = historyService;
+            _codeFix = new CodeFixService();
         }
-
+        /*
         [HttpPost("analyze")]
         public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
         {
-            /* ---------- VALIDATION ---------- */
-
             if (string.IsNullOrWhiteSpace(request.ErrorMessage)
                 && string.IsNullOrWhiteSpace(request.CodeSnippet))
             {
@@ -39,38 +45,34 @@ namespace Web.Controllers.API
                 });
             }
 
-            /* ---------- BASE ANALYSIS ---------- */
-
             var result = _service.Analyze(request.ErrorMessage);
 
-            bool needsAi = _aiDecision.ShouldUseAI(result.confidence);
-           
-            string explanation =
-                request.ExplanationMode == "beginner"
-                ? "BEGINNER MODE:\n" + result.explanation
-                : "DEVELOPER MODE:\n" + result.explanation;
+            string explanation;
+            string suggestion;
+            int confidence;
+            string riskLevel;
 
-            string suggestion = result.suggestion;
-
-            /* ---------- SAVE HISTORY ---------- */
-
-            _historyService.Add(new ErrorHistory
+            if (result.confidence <= 0)
             {
-                ErrorMessage = request.ErrorMessage,
-                CodeSnippet = request.CodeSnippet,
-                Explanation = explanation
-            });
-            if (needsAi)
-            {
-                var aiText = _openAi
-                    .AnalyzeAsync(
-                        request.ErrorMessage + "\n" + request.CodeSnippet,
-                        request.ExplanationMode
-                    ).Result;
-
-                explanation += "\n\nAI Analysis:\n" + aiText;
+                explanation = "Input could not be classified as a known exception.";
+                suggestion = "Provide a valid .NET exception message.";
+                confidence = 40;
+                riskLevel = "Medium";
             }
-            /* ---------- CODE FIX GENERATION ---------- */
+            else
+            {
+                explanation = request.ExplanationMode == "beginner"
+                    ? "BEGINNER MODE:\n" + result.explanation
+                    : "DEVELOPER MODE:\n" + result.explanation;
+
+                suggestion = result.suggestion;
+                confidence = result.confidence;
+
+                riskLevel =
+                    confidence >= 80 ? "Low" :
+                    confidence >= 50 ? "Medium" :
+                    "High";
+            }
 
             var fixes = _codeFix.GenerateFix(
                 request.ErrorMessage,
@@ -78,36 +80,284 @@ namespace Web.Controllers.API
                 request.ExplanationMode
             );
 
-            /* ---------- RISK LEVEL ---------- */
-
-            string riskLevel;
-
-            if (result.confidence >= 80)
-                riskLevel = "Low";
-            else if (result.confidence >= 50)
-                riskLevel = "Medium";
-            else
-                riskLevel = "High";
-
-            /* ---------- LEARNING INSIGHT (WOW FEATURE) ---------- */
-
-            var insight = _historyService
-                .GetLearningInsights()
-                .FirstOrDefault();
-
-            /* ---------- RESPONSE ---------- */
+            // 🔥 HISTORY ALWAYS SAVED
+            _historyService.Add(new ErrorHistory
+            {
+                ErrorMessage = request.ErrorMessage,
+                CodeSnippet = request.CodeSnippet,
+                Explanation = explanation,
+                Date = DateTime.Now
+            });
 
             return Ok(new
             {
-                riskLevel = riskLevel,
-                confidence = result.confidence,
-                explanation = explanation,
-                suggestion = suggestion,
-                fixedCode = fixes.FixedCode,
-                alternativeFix = fixes.AlternativeFix,
-                aiRequired = needsAi,
-                insight = insight
+                riskLevel,
+                confidence,
+                explanation,
+                suggestion,
+                fixedCode = fixes?.FixedCode ?? "",
+                alternativeFix = fixes?.AlternativeFix ?? "",
+                aiRequired = false
             });
+        }*/
+
+        /*
+        [HttpPost("analyze")]
+        public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(request.ErrorMessage)
+                    && string.IsNullOrWhiteSpace(request.CodeSnippet))
+                {
+                    return BadRequest(new
+                    {
+                        message = "No input provided."
+                    });
+                }
+
+                var result = _service.Analyze(request.ErrorMessage);
+
+                string explanation = request.ExplanationMode == "beginner"
+                    ? "BEGINNER MODE:\n" + result.explanation
+                    : "DEVELOPER MODE:\n" + result.explanation;
+
+                string suggestion = result.suggestion;
+
+                var fixes = _codeFix.GenerateFix(
+                    request.ErrorMessage,
+                    request.CodeSnippet,
+                    request.ExplanationMode
+                );
+
+                int confidence = result.confidence;
+
+                string riskLevel =
+                    confidence >= 80 ? "Low" :
+                    confidence >= 50 ? "Medium" :
+                    "High";
+
+                _historyService.Add(new ErrorHistory
+                {
+                    ErrorMessage = request.ErrorMessage,
+                    CodeSnippet = request.CodeSnippet,
+                    Explanation = explanation,
+                    Date = DateTime.Now
+                });
+
+                return Ok(new
+                {
+                    riskLevel,
+                    confidence,
+                    explanation,
+                    suggestion,
+                    fixedCode = fixes?.FixedCode ?? "",
+                    alternativeFix = fixes?.AlternativeFix ?? "",
+                    aiRequired = false
+                });
+            }
+            catch (Exception)
+            {
+                return Ok(new
+                {
+                    riskLevel = "Medium",
+                    confidence = 40,
+                    explanation = "Unexpected input. The analyzer could not process this error.",
+                    suggestion = "Try providing a recognizable .NET exception.",
+                    fixedCode = "",
+                    alternativeFix = "",
+                    aiRequired = false
+                });
+            }
+        }*/
+        /*
+        [HttpPost("analyze")]
+        public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(request.ErrorMessage)
+                    && string.IsNullOrWhiteSpace(request.CodeSnippet))
+                {
+                    return BadRequest(new
+                    {
+                        message = "No input provided."
+                    });
+                }
+
+                var result = _service.Analyze(request.ErrorMessage);
+
+                if (result.confidence <= 0)
+                {
+                    return Ok(new
+                    {
+                        riskLevel = "Medium",
+                        confidence = 40,
+                        explanation = "Input could not be classified as a known exception.",
+                        suggestion = "Provide a valid .NET exception message.",
+                        fixedCode = "",
+                        alternativeFix = "",
+                        aiRequired = false
+                    });
+                }
+
+                string explanation =
+                    request.ExplanationMode == "beginner"
+                    ? "BEGINNER MODE:\n" + result.explanation
+                    : "DEVELOPER MODE:\n" + result.explanation;
+
+                string suggestion = result.suggestion;
+
+                var fixes = _codeFix.GenerateFix(
+                    request.ErrorMessage,
+                    request.CodeSnippet,
+                    request.ExplanationMode
+                );
+
+                string fixedCode = fixes?.FixedCode ?? "";
+                string alternativeFix = fixes?.AlternativeFix ?? "";
+
+                string riskLevel =
+                    result.confidence >= 80 ? "Low" :
+                    result.confidence >= 50 ? "Medium" :
+                    "High";
+
+                // SAVE HISTORY
+                _historyService.Add(new ErrorHistory
+                {
+                    ErrorMessage = request.ErrorMessage,
+                    CodeSnippet = request.CodeSnippet,
+                    Explanation = explanation,
+                    Date = DateTime.Now
+                });
+
+                return Ok(new
+                {
+                    riskLevel = riskLevel,
+                    confidence = result.confidence,
+                    explanation = explanation,
+                    suggestion = suggestion,
+                    fixedCode = fixedCode,
+                    alternativeFix = alternativeFix,
+                    aiRequired = false
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = "Server error",
+                    detail = ex.Message
+                });
+            }
+        }
+        */
+        /*
+        [HttpPost("analyze")]
+        public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest("Request is null");
+                }
+
+                if (string.IsNullOrWhiteSpace(request.ErrorMessage)
+                    && string.IsNullOrWhiteSpace(request.CodeSnippet))
+                {
+                    return BadRequest("No input provided");
+                }
+
+                var result = _service.Analyze(request.ErrorMessage);
+
+                string explanation = "";
+                string suggestion = "";
+                int confidence = 50;
+
+                if (result.confidence > 0)
+                {
+                    explanation = request.ExplanationMode == "beginner"
+                        ? "BEGINNER MODE:\n" + result.explanation
+                        : "DEVELOPER MODE:\n" + result.explanation;
+
+                    suggestion = result.suggestion;
+                    confidence = result.confidence;
+                }
+                else
+                {
+                    explanation = "Input could not be classified.";
+                    suggestion = "Provide a valid .NET exception.";
+                }
+
+                var fixes = _codeFix.GenerateFix(
+                    request.ErrorMessage,
+                    request.CodeSnippet,
+                    request.ExplanationMode
+                );
+
+                string fixedCode = fixes?.FixedCode ?? "";
+                string alternativeFix = fixes?.AlternativeFix ?? "";
+
+                string riskLevel =
+                    confidence >= 80 ? "Low" :
+                    confidence >= 50 ? "Medium" :
+                    "High";
+
+                // HISTORY SAVE (SAFE)
+                try
+                {
+                    _historyService.Add(new ErrorHistory
+                    {
+                        ErrorMessage = request.ErrorMessage,
+                        CodeSnippet = request.CodeSnippet,
+                        Explanation = explanation,
+                        Date = DateTime.Now
+                    });
+                }
+                catch { }
+
+                return Ok(new
+                {
+                    riskLevel = riskLevel,
+                    confidence = confidence,
+                    explanation = explanation,
+                    suggestion = suggestion,
+                    fixedCode = fixedCode,
+                    alternativeFix = alternativeFix,
+                    aiRequired = false
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = "Server crash",
+                    detail = ex.Message
+                });
+            }
+        }
+        */
+        [HttpPost("analyze")]
+        public IActionResult Analyze([FromBody] ErrorAnalysisRequest request)
+        {
+            try
+            {
+                return Ok(new
+                {
+                    riskLevel = "Low",
+                    confidence = 90,
+                    explanation = "Test response from API",
+                    suggestion = "Controller works",
+                    fixedCode = "",
+                    alternativeFix = "",
+                    aiRequired = false
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.ToString());
+            }
         }
     }
 }

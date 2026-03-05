@@ -1,5 +1,4 @@
-﻿@model List<Web.Models.ErrorHistory>
-
+﻿@model Web.Models.HistoryViewModel
 @{
     ViewData["Title"] = "Error History";
 }
@@ -8,7 +7,7 @@
 }
 <h3>Learning Progress</h3>
 <p>
-    You have analyzed <b>@Model.Count()</b> errors using AI.
+    You have analyzed <b>@Model.Errors.Count()</b> errors using AI.
 </p>
 
 <style>
@@ -457,7 +456,7 @@
         <th>Error</th>
         <th>Times Occurred</th>
     </tr>
-    @foreach (var item in ViewBag.CommonErrors)
+    @foreach (var item in Model.CommonErrors)
     {
         <tr>
             <td>@item.Error</td>
@@ -472,7 +471,7 @@
 
 <div class="history-list">
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Errors)
     {
         <div class="history-card">
 
@@ -495,7 +494,14 @@
 
                 <div class="history-section">
                     <strong>Code</strong>
-                    <pre>@item.CodeSnippet</pre>
+                    @if (!string.IsNullOrEmpty(item.CodeSnippet))
+                    {
+                        <pre>@item.CodeSnippet</pre>
+                    }
+                    else
+                    {
+                        <div class="empty-code">No code snippet provided.</div>
+                    }
                 </div>
 
                 <div class="history-section">
