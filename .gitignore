@@ -9,6 +9,8 @@ obj/
 # LOCAL DATABASE
 # ======================
 *.db
+*.db-shm
+*.db-wal
 
 # ======================
 # APP SETTINGS (SECRETS)
