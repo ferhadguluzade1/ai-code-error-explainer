@@ -545,12 +545,12 @@ namespace Web.Controllers.API
                 /* ---------- RECOGNITION FLAG ---------- */
 
                 bool recognized = confidence > 30;
+                bool hasCode = !string.IsNullOrWhiteSpace(request.CodeSnippet);
 
                 /* ---------- FIX GENERATION ---------- */
-
                 FixResult fixes = null;
 
-                if (recognized)
+                if (recognized && hasCode)
                 {
                     fixes = _codeFix.GenerateFix(
                         request.ErrorMessage,
@@ -558,7 +558,6 @@ namespace Web.Controllers.API
                         request.ExplanationMode
                     );
                 }
-
                 /* ---------- RISK LEVEL ---------- */
 
                 string riskLevel =

@@ -254,6 +254,21 @@
     }
 
     }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    textarea {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .result-placeholder {
+        color: #64748b;
+        font-size: 14px;
+        opacity: 0.8;
+    }
 </style>
 
 
@@ -293,7 +308,7 @@
         <div class="panel">
 
             <div id="result" class="result-box">
-                <div style="opacity:0.6">
+                <div id="result" class="result-placeholder">
                     Paste an error and press Analyze to get AI guidance.
                 </div>
                 <div id="aiReport" style="display:none;">
